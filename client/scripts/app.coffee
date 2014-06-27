@@ -1,1 +1,1 @@
-@App = angular.module('app', [])
+@App = angular.module('app', ['ui.router', 'restangular'])

@@ -24,6 +24,8 @@
     <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
   <![endif]-->
 
+  <div ui-view></div>
+
 
   <!-- build:js scripts/vendor.js -->
   <script src="bower_components/jquery/dist/jquery.min.js"></script>
@@ -31,6 +33,8 @@
   <script src="bower_components/angular-route/angular-route.min.js"></script>
   <script src="bower_components/angular-animate/angular-animate.min.js"></script>
   <script src="bower_components/underscore/underscore-min.js"></script>
+  <script src="bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
+  <script src="bower_components/restangular/dist/restangular.min.js"></script>
   <!-- endbuild -->
 
   <!-- build:js scripts/ui.js -->
@@ -62,12 +66,13 @@
 
   <!-- build:js({.tmp,app}) scripts/app.js -->
   <script src="scripts/app.js"></script>
-  <script src="scripts/controllers/foo_ctrl.js"></script>
+  <script src="scripts/config/restangular.js"></script>
+  <script src="scripts/config/routes.js"></script>
+  <script src="scripts/services/user_service.js"></script>
+  <script src="scripts/services/error_service.js"></script>
+  <script src="scripts/controllers/generic/login_ctrl.js"></script>
+  <script src="scripts/controllers/generic/signup_ctrl.js"></script>
+  <script src="scripts/controllers/dashboard/nav_ctrl.js"></script>
   <!-- endbuild -->
-
-  <div ng-controller='FooCtrl'>
-    <input type='text' ng-model='hello' />
-    {{hello}}
-  </div>
 </body>
 </html>
