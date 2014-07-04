@@ -1,6 +1,9 @@
 App.config (RestangularProvider, $httpProvider) ->
-  # RestangularProvider.setBaseUrl('http://server.sitenotify.dev/api')
-  RestangularProvider.setBaseUrl('http://server.sitenotify.net/api')
+  host = window.location.hostname.replace('www.', '')
+  accpepted_hosts = ['sitenotify.net', 'sitenotify.dev', 'localhost']
+  host = 'sitenotify.net' if not _.include(accpepted_hosts, host)
+
+  RestangularProvider.setBaseUrl("http://server.#{host}/api")
 
 App.run (Restangular, $state) ->
   Restangular.setErrorInterceptor (response, deferred, responseHandler) ->
