@@ -1,4 +1,5 @@
 App.controller 'SettingsCtrl', ($scope, $modal, Restangular, AccountService, $cookies) ->
+  $scope.inviteSentUser = {}
 
   $scope.setup = ->
     $scope.$on 'new_account', =>
@@ -17,8 +18,11 @@ App.controller 'SettingsCtrl', ($scope, $modal, Restangular, AccountService, $co
       controller: 'newMemberModalCtrl'
     )
     m.result.then (data) ->
-      $scope.inviteSentUser = data
+      $scope.inviteSentUser.data = data
       AccountService.fetchInvites()
+
+App.controller 'settingsGeneralCtrl', ($scope, AccountService) ->
+  $scope.account = AccountService.current
 
 App.controller 'settingsMemberCtrl', ($scope, AccountService, Restangular, UserService) ->
 
@@ -53,12 +57,24 @@ App.controller 'settingsInviteCtrl', ($scope, AccountService, Restangular) ->
     AccountService.currentAccountInvites
 
   $scope.setInviteAdmin = (invite) ->
-    invite.put()
-    AccountService.fetchInvites()
+    invite.put().then ->
+      AccountService.fetchInvites()
 
   $scope.remove = (invite) ->
-    invite.remove()
-    AccountService.fetchInvites()
+    invite.remove().then ->
+      AccountService.fetchInvites()
+
+  $scope.resendDisabled = (invite) ->
+    invite.invites_sent >= 3
+
+  $scope.resend = (invite) ->
+    invite.customPOST({}, 'resend').then (data) ->
+      if data
+        $scope.inviteSentUser.data = invite
+        AccountService.fetchInvites()
+      else
+        alert('Unable to send invite')
+
 
 App.controller 'newMemberModalCtrl', ($scope, $modalInstance, Restangular, AccountService) ->
   $scope.user = {}

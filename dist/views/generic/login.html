@@ -1,4 +1,4 @@
-<div class="form-container">
+<div class="form-container" ng-controller='LoginCtrl'>
 
   <section class="row signin-social text-center">
     <a href="javascript:;" class="btn-twitter-round"><i class="fa fa-twitter"></i></a>
@@ -9,7 +9,11 @@
   </section>
 
   <span class="line-thru">OR</span>
-  <div ng-controller='LoginCtrl'>
+  <div>
+    <div class='callout callout-info' ng-if='inviteCode'>
+      You have been invited to SiteNotify. Complete the form below to login. If you don't have an account, <a ui-sref='special.signup({ inviteCode: inviteCode, accountId: accountId })'>Click Here</a>
+    </div>
+
     <div class="alert ng-isolate-scope alert-danger" ng-class="alert-warning" ng-show='error'>
       {{error}}
     </div>
@@ -43,7 +47,7 @@
   <section>
     <p class="text-center"><a ui-sref="special.forgot_password">Forgot your password?</a></p>
     <p class="text-center text-muted text-small">Don't have an account yet? 
-      <a ui-sref="special.signup">Sign up</a></p>
+      <a ui-sref='special.signup({ inviteCode: inviteCode, accountId: accountId })'>Click Here</a></p>
     </section>
 
   </div>

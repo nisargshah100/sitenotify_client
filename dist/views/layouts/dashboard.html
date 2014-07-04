@@ -1,2 +1,8 @@
-<section data-ng-include=" 'views/dashboard/nav.html' " id="header" class="top-header"></section>
-<aside data-ng-include=" 'views/dashboard/sidebar.html' " id="nav-container"></aside>
+<section data-ng-include=" 'views/dashboard/shared/nav.html' " id="header" class="top-header"></section>
+<aside data-ng-include=" 'views/dashboard/shared/sidebar.html' " id="nav-container"></aside>
+
+<section data-ng-view="" id="content" class="animate-fade-up ng-scope">
+  <div class="page page-dashboard ng-scope">
+    <div ui-view></div>
+  </div>
+</div>
