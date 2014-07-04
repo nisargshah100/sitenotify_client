@@ -54,6 +54,7 @@ App.config ($stateProvider, $urlRouterProvider) ->
   $stateProvider
     .state 'main', {
       url: ''
+      template: 'Welcome!'
     }
     .state 'main2', {
       url: '/'
