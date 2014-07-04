@@ -32,7 +32,10 @@
     "textAngular": "1.2.1",
     "flot.tooltip": "~0.6.7",
     "angular-ui-router": "0.2.10",
-    "restangular": "1.4.0"
+    "restangular": "1.4.0",
+    "angular-gravatar": "0.2.0",
+    "angular-cookies": "1.2.18",
+    "angular-moment": "0.7.1"
   },
   "devDependencies": {
     "twbs-bootstrap-sass": "~3.1.1",

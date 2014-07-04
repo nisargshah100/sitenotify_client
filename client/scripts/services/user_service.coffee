@@ -1,8 +1,12 @@
 App.service 'UserService', (Restangular) ->
   @currentUser = null
-  @setUser = (@currentUser = user) ->
+  @setUser = (@currentUser) ->
   @refresh = ->
     Restangular.all('users').customGET('details').then (data) =>
-      @currentUser = data.user
+      @currentUser = data
+  @logout = ->
+    if @currentUser
+      Restangular.all('sessions').remove().then ->
+        @currentUser = null
+
   @
-  

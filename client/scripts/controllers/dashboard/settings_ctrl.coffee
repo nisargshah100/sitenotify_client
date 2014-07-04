@@ -1,0 +1,74 @@
+App.controller 'SettingsCtrl', ($scope, $modal, Restangular, AccountService, $cookies) ->
+
+  $scope.setup = ->
+    $scope.$on 'new_account', =>
+      AccountService.fetchMembers()
+      AccountService.fetchInvites()
+
+  $scope.canAccess = ->
+    AccountService.current.admin
+
+  $scope.account = ->
+    AccountService.current
+
+  $scope.inviteNewMemberDialog = ->
+    m = $modal.open(
+      templateUrl: "newMemberModal"
+      controller: 'newMemberModalCtrl'
+    )
+    m.result.then (data) ->
+      $scope.inviteSentUser = data
+      AccountService.fetchInvites()
+
+App.controller 'settingsMemberCtrl', ($scope, AccountService, Restangular, UserService) ->
+
+  $scope.setup = ->
+    AccountService.fetchMembers()
+
+  $scope.members = ->
+    AccountService.currentAccountMembers
+
+  $scope.revokeAccess = (user_acc) ->
+    Restangular.one('accounts', user_acc.account_id).customPOST({ user_id: user_acc.user.id }, 'revoke_access').then (data) ->
+      AccountService.fetchMembers()
+
+  $scope.enableAccess = (user_acc) ->
+    Restangular.one('accounts', user_acc.account_id).customPOST({ user_id: user_acc.user.id }, 'enable_access').then (data) ->
+      AccountService.fetchMembers()
+
+  $scope.removeAccess = (user_acc) ->
+    Restangular.one('accounts', user_acc.account_id).customPOST({ user_id: user_acc.user.id }, 'remove_access').then (data) ->
+      AccountService.fetchMembers()
+
+  $scope.setAdmin = (user_acc) ->
+    Restangular.one('accounts', user_acc.account_id).customPOST({ user_id: user_acc.user.id, admin: user_acc.admin }, 'set_admin').then (data) ->
+      AccountService.fetchMembers()
+
+App.controller 'settingsInviteCtrl', ($scope, AccountService, Restangular) ->
+
+  $scope.setup = ->
+    AccountService.fetchInvites()
+
+  $scope.invites = ->
+    AccountService.currentAccountInvites
+
+  $scope.setInviteAdmin = (invite) ->
+    invite.put()
+    AccountService.fetchInvites()
+
+  $scope.remove = (invite) ->
+    invite.remove()
+    AccountService.fetchInvites()
+
+App.controller 'newMemberModalCtrl', ($scope, $modalInstance, Restangular, AccountService) ->
+  $scope.user = {}
+
+  $scope.ok = ->
+    Restangular.one('accounts', AccountService.current.id).all('account_invites').post($scope.user).then (
+      (data) =>
+        $modalInstance.close $scope.user
+    )
+
+  $scope.cancel = ->
+    $modalInstance.dismiss "cancel"
+    return

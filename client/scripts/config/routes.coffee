@@ -7,12 +7,12 @@ App.config ($stateProvider, $urlRouterProvider) ->
     }
     
     .state 'special.login', {
-      url: '/login'
+      url: '/login?inviteCode&accountId'
       templateUrl: 'views/generic/login.html'
     }
 
     .state 'special.signup', {
-      url: '/signup',
+      url: '/signup?inviteCode&accountId',
       templateUrl: 'views/generic/signup.html'
     }
 
@@ -27,11 +27,28 @@ App.config ($stateProvider, $urlRouterProvider) ->
       resolve: {
         currentUser: (UserService) ->
           UserService.currentUser || UserService.refresh()
+        accounts: (AccountService) ->
+          AccountService.refresh()
       }
     }
 
     .state 'dashboard.home', {
       url: '/dashboard'
+      templateUrl: 'views/dashboard/home.html'
+    }
+
+    .state 'dashboard.monitor', {
+      template: '<div ui-view></div>'
+    }
+
+    .state 'dashboard.monitor.new', {
+      url: '/dashboard/monitor/new'
+      templateUrl: 'views/dashboard/monitor/new.html'
+    }
+
+    .state 'dashboard.settings', {
+      url: '/dashboard/settings'
+      templateUrl: 'views/dashboard/settings.html'
     }
 
   $stateProvider

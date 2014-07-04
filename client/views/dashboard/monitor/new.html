@@ -1,0 +1,50 @@
+<form class="ng-pristine ng-valid" ng-controller='MonitorCtrl'>
+  <section class="panel panel-default">
+    <div class="panel-heading">
+      <strong><span class="glyphicon glyphicon-th"></span>&nbsp;&nbsp;&nbsp;Add New Monitor</strong>
+    </div>
+    <div class="panel-body">
+      <div class="form-group">
+        <label>Website Name</label>
+        <div>
+          <input type="text" class="form-control" ng-model='monitor.name'>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Website URL</label>
+        <div>
+          <input type="text" class="form-control" ng-model='monitor.url'>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Check this website every</label>
+        <span class="ui-select" style='margin-left: 7px;'>
+          <select ng-model='monitor.interval' ng-options='obj.value as obj.text for obj in intervalOptions'>
+          </select>
+        </span>
+      </div>
+      <div class='form-group'>
+        <dl class="dl-horizontal">
+          <dt>Get Notified via</dt>
+          <dd>
+            <label class="ui-checkbox">
+              <input name="checkbox1" type="checkbox" value="option1" ng-model='monitor.callNotification'>
+              <span>Call</span>
+            </label>
+            <label class="ui-checkbox">
+              <input name="checkbox1" type="checkbox" value="option2" ng-model='monitor.textNotification'>
+              <span>Text</span>
+            </label>
+            <label class="ui-checkbox">
+              <input name="checkbox1" type="checkbox" value="option3" ng-model='monitor.emailNotification'>
+              <span>Email</span>
+            </label>
+            <div ng-show='phoneNumberRequired()'>
+              <input type="text" class="form-control" ng-model='monitor.phone' placeholder='Enter a phone number we can call or text to notify you (ex/ 123-123-1234)'>
+            </div>
+          </dd>
+        </dl>
+      </div>
+    </div>
+  </section>
+</form>

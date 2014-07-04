@@ -32,3 +32,6 @@ client/bower_components
 
 .editorconfig
 .tmpg
+
+.tmp
+.sass-cache
