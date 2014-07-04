@@ -34,4 +34,5 @@ client/bower_components
 .tmpg
 
 .tmp
+.bundle
 .sass-cache
