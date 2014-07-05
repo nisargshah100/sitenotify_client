@@ -76,13 +76,17 @@ App.controller 'settingsInviteCtrl', ($scope, AccountService, Restangular) ->
         alert('Unable to send invite')
 
 
-App.controller 'newMemberModalCtrl', ($scope, $modalInstance, Restangular, AccountService) ->
+App.controller 'newMemberModalCtrl', ($scope, $modalInstance, Restangular, AccountService, ErrorService) ->
   $scope.user = {}
+  $scope.errors = null
 
   $scope.ok = ->
-    Restangular.one('accounts', AccountService.current.id).all('account_invites').post($scope.user).then (
+    Restangular.one('accounts', AccountService.current.id).all('account_invites').post($scope.user).then(
       (data) =>
         $modalInstance.close $scope.user
+
+      (err) => 
+        $scope.errors = ErrorService.fullMessages(err)
     )
 
   $scope.cancel = ->

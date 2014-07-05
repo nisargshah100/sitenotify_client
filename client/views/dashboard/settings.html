@@ -27,6 +27,12 @@
               <h3>Invite Member</h3>
             </div>
             <div class="modal-body">
+
+              <div class="alert ng-isolate-scope alert-danger" ng-class="alert-warning" ng-show='errors'>
+                <ul ng-repeat='error in errors'>
+                  <li>{{error}}</li>
+                </ul>
+              </div>
               
               <form class="form-horizontal ng-pristine ng-valid" style='margin-left: 20px; margin-right: 20px;' ng-submit='ok()'>
                 <fieldset>
