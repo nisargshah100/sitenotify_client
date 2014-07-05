@@ -2,20 +2,68 @@
   <div class="panel-heading"><span class="glyphicon glyphicon-th"></span> Change Plan</div>
     <div class="panel-body ng-scope">
 
-      <div class='callout callout-info'>
-        Your subscription is prorated - you can cancel or upgrade anytime. You will only be charged
-        for the days you are with a plan. If you downgrade, your account will be refunded. 
+      <div ng-if='!account().admin' class='callout callout-danger'>
+        <h4>Access Denied</h4>
+        You don't have permissions to change the plan. 
       </div>
 
-      <div class="form-group col-sm-6">
-        <label for="">Select A New Plan</label>
-        
-        <div style='margin-top: -5px;'>
-          <span class='ui-select'>
-            <select ng-model="hstep" class="ng-pristine ng-valid">
-              <option value="{{plan.id}}" ng-repeat='plan in plans()'>{{plan.name}} (${{plan.price}})</option>
-            </select>
-          </span>
+      <div ng-if='account().admin'>
+        <div class='callout callout-info'>
+          Your subscription is prorated - you can cancel or upgrade anytime. You will only be charged
+          for the days you are with a plan. If you downgrade, your account will be refunded. 
+        </div>
+
+        <div class='row'>
+          <div class="form-group col-sm-6">
+            <label for="">Select A New Plan</label>
+            <div style='margin-top: -5px;'>
+              <span class='ui-select'>
+                <select ng-model="selectedPlanId" class="ng-pristine ng-valid">
+                  <option value="{{plan.id}}" ng-repeat='plan in plans()'>
+                    {{plan.name}} (${{plan.price}})
+                  </option>
+                </select>
+              </span>
+            </div>
+            <hr />
+            <h4>Payment Details</h4>
+            <form>
+
+            </form>
+          </div>
+
+          <div class='col-sm-6' ng-show='selectedPlan()'>
+            <div class="panel panel-info">
+              <div class="panel-heading">
+                <h3 class="panel-title">Plan Details</h3>
+              </div>
+              <table class='table'>
+                <tr>
+                  <th>Texts (per month)</th>
+                  <td>{{selectedPlan().texts}}</td>
+                </tr>
+                <tr>
+                  <th>Emails (per month)</th>
+                  <td>{{selectedPlan().emails}}</td>
+                </tr>
+                <tr>
+                  <th>Calls (per month)</th>
+                  <td>{{selectedPlan().calls}}</td>
+                </tr>
+                <tr>
+                  <th>Max Users</th>
+                  <td>{{selectedPlan().max_users}}</td>
+                </tr>
+                <tr>
+                  <th>Monitors</th>
+                  <td>{{selectedPlan().max_monitors}}</td>
+                </tr>
+                <tr>
+                  <th>Price (per month)</th>
+                  <td>${{selectedPlan().price}} USD</td>
+                </tr>
+            </table>
+          </div>
         </div>
       </div>
 

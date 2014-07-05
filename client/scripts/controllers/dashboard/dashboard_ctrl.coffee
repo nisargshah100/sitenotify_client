@@ -1,4 +1,4 @@
-App.controller 'DashboardCtrl', ($scope, AccountService) ->
+App.controller 'DashboardCtrl', ($scope, AccountService, UserService) ->
   
   $scope.plan = ->
     AccountService.current.plan

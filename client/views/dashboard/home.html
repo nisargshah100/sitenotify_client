@@ -19,7 +19,7 @@
           <h3 class="panel-title">Account Details</h3>
         </div>
         <table class='table'>
-          <tr>
+          <tr ng-if='account().admin'>
             <td colspan='2' style='text-align:right'>
               <a ui-sref='dashboard.plan' class='btn btn-sm btn-line-info'>Change Plan</a>
             </td>
