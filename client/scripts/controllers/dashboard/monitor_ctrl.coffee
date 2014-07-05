@@ -1,5 +1,5 @@
 App.controller 'MonitorCtrl', ($scope, UserService) ->
-  $scope.monitor = { interval: 10, url: 'http://', emailNotification: true}
+  $scope.monitor = { interval: 10, url: 'http://', emailNotification: true, email: UserService.currentUser.email }
   $scope.intervalOptions = [
     { value: 1, text: 'minute' }
     { value: 2, text: '2 minutes'}

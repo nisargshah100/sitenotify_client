@@ -35,7 +35,8 @@
     "restangular": "1.4.0",
     "angular-gravatar": "0.2.0",
     "angular-cookies": "1.2.18",
-    "angular-moment": "0.7.1"
+    "angular-moment": "0.7.1",
+    "moment-timezone": "0.1.0"
   },
   "devDependencies": {
     "twbs-bootstrap-sass": "~3.1.1",

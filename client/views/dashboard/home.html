@@ -1,6 +1,7 @@
-<div class="view-container">
+<div class="view-container" ng-controller='DashboardCtrl'>
+
   <div class="row">
-    <div class="col-lg-3 col-xsm-6">
+    <div class="col-md-9">
       <div class="panel mini-box">
         <span class="box-icon bg-success">
           <i class="fa fa-rocket"></i>
@@ -11,38 +12,44 @@
         </div>
       </div>
     </div>
-    <div class="col-lg-3 col-xsm-6">
-      <div class="panel mini-box">
-        <span class="box-icon bg-info">
-          <i class="fa fa-users"></i>
-        </span>
-        <div class="box-info">
-          <p class="size-h2">112</p>
-          <p class="text-muted"><span data-i18n="New users">New users</span></p>
+
+    <div class='col-md-3'>
+      <div class="panel panel-info">
+        <div class="panel-heading">
+          <h3 class="panel-title">Account Details</h3>
         </div>
+        <table class='table'>
+          <tr>
+            <td colspan='2' style='text-align:right'>
+              <a ui-sref='dashboard.plan' class='btn btn-sm btn-line-info'>Change Plan</a>
+            </td>
+          </tr>
+          <tr>
+            <th>Plan</th>
+            <td style='text-align:right;'>{{plan().name}}</td>
+          </tr>
+          <tr>
+            <th>Calls</th>
+            <td style='text-align:right;'>{{account().used_calls}} / {{plan().calls}}</td>
+          </tr>
+          <tr>
+            <th>Texts</th>
+            <td style='text-align:right;'>{{account().used_texts}} / {{plan().texts}}</td>
+          </tr>
+          <tr>
+            <th>Emails</th>
+            <td style='text-align:right;'>{{account().used_emails}} / {{plan().emails}}</td>
+          </tr>
+          <tr>
+            <th>Users</th>
+            <td style='text-align:right;'>{{account().total_members}} / {{plan().max_users}}</td>
+          </tr>
+          <tr>
+            <th>Monitors</th>
+            <td style='text-align:right;'>{{account().total_monitors}} / {{plan().max_monitors}}</td>
+          </tr>
+        </table>
       </div>
     </div>
-    <div class="col-lg-3 col-xsm-6">
-      <div class="panel mini-box">
-        <span class="box-icon bg-warning">
-          <i class="fa fa-dollar"></i>
-        </span>
-        <div class="box-info">
-          <p class="size-h2">4,550</p>
-          <p class="text-muted"><span data-i18n="Profit">Profit</span></p>
-        </div>
-      </div>
-    </div>
-    <div class="col-lg-3 col-xsm-6">
-      <div class="panel mini-box">
-        <span class="box-icon bg-danger">
-          <i class="fa fa-shopping-cart"></i>
-        </span>
-        <div class="box-info">
-          <p class="size-h2">262</p>
-          <p class="text-muted"><span data-i18n="Sales">Sales</span></p>
-        </div>
-      </div>
-    </div>
-  </div>
+
 </div>

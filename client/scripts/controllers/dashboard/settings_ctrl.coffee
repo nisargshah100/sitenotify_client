@@ -22,7 +22,7 @@ App.controller 'SettingsCtrl', ($scope, $modal, Restangular, AccountService, $co
       AccountService.fetchInvites()
 
 App.controller 'settingsGeneralCtrl', ($scope, AccountService) ->
-  $scope.account = AccountService.current
+  $scope.account = angular.copy(AccountService.current)
 
 App.controller 'settingsMemberCtrl', ($scope, AccountService, Restangular, UserService) ->
 

@@ -51,6 +51,11 @@ App.config ($stateProvider, $urlRouterProvider) ->
       templateUrl: 'views/dashboard/settings.html'
     }
 
+    .state 'dashboard.plan', {
+      url: '/dashboard/plan'
+      templateUrl: 'views/dashboard/plan.html'
+    }
+
   $stateProvider
     .state 'main', {
       url: ''

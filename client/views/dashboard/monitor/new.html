@@ -39,8 +39,11 @@
               <input name="checkbox1" type="checkbox" value="option3" ng-model='monitor.emailNotification'>
               <span>Email</span>
             </label>
-            <div ng-show='phoneNumberRequired()'>
-              <input type="text" class="form-control" ng-model='monitor.phone' placeholder='Enter a phone number we can call or text to notify you (ex/ 123-123-1234)'>
+            <div ng-show='monitor.emailNotification'>
+              <input type="text" class="form-control" ng-model='monitor.email' placeholder='Enter email address (comma seperated)'>
+            </div>
+            <div ng-show='phoneNumberRequired()' style='margin-top: 10px;'>
+              <input type="text" class="form-control" ng-model='monitor.phone' placeholder='Enter a phone number to text or call (comma seperated)'>
             </div>
           </dd>
         </dl>
