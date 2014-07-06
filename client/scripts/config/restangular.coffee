@@ -1,11 +1,9 @@
-App.config (RestangularProvider, $httpProvider) ->
-  host = window.location.hostname.replace('www.', '')
-  if host == 'sitenotify.net'
-    RestangularProvider.setBaseUrl("http://sitenotify.net/api")
+App.run (Restangular, $state, DevProdService) ->
+  if DevProdService.isDev()
+    Restangular.setBaseUrl("http://server.#{DevProdService.host()}/api")
   else
-    RestangularProvider.setBaseUrl("http://server.#{host}/api")
+    Restangular.setBaseUrl("http://sitenotify.net/api")
 
-App.run (Restangular, $state) ->
   Restangular.setErrorInterceptor (response, deferred, responseHandler) ->
     if response.status not in [422, 401, 404]
       alert 'Unable to process this request'

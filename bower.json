@@ -36,8 +36,7 @@
     "angular-gravatar": "0.2.0",
     "angular-cookies": "1.2.18",
     "angular-moment": "0.7.1",
-    "moment-timezone": "0.1.0",
-    "skeuocard": "1.0.3"
+    "moment-timezone": "0.1.0"
   },
   "devDependencies": {
     "twbs-bootstrap-sass": "~3.1.1",
