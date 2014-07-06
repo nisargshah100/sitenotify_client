@@ -33,6 +33,6 @@ App.controller 'PlansCtrl', ($scope, PlanService, AccountService, DevProdService
 
   $scope.processPayment = (form) ->
     $scope.card.processing = true
-    Stripe.card.createToken $('#payment-form'), processPaymentFinished
+    Stripe.card.createToken $('#payment-form'), $scope.processPaymentFinished
 
 
