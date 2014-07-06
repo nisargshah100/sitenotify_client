@@ -54,6 +54,11 @@ App.config ($stateProvider, $urlRouterProvider) ->
     .state 'dashboard.plan', {
       url: '/dashboard/plan'
       templateUrl: 'views/dashboard/plan.html'
+      resolve: {
+        plans: (PlanService) ->
+          if PlanService.plans.length == 0
+            PlanService.fetchPlans()
+      }
     }
 
   $stateProvider

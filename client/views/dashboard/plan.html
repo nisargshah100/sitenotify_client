@@ -1,4 +1,4 @@
-<section class="panel panel-default" ng-controller='PlansCtrl' ng-init="setup()">
+<section class="panel panel-default" ng-controller='PlansCtrl' ng-init='setup()'>
   <div class="panel-heading"><span class="glyphicon glyphicon-th"></span> Change Plan</div>
     <div class="panel-body ng-scope">
 
@@ -18,21 +18,57 @@
             <label for="">Select A New Plan</label>
             <div style='margin-top: -5px;'>
               <span class='ui-select'>
-                <select ng-model="selectedPlanId" class="ng-pristine ng-valid">
+                <select ng-model="selected.id" class="ng-pristine ng-valid">
                   <option value="{{plan.id}}" ng-repeat='plan in plans()'>
                     {{plan.name}} (${{plan.price}})
                   </option>
                 </select>
               </span>
             </div>
-            <hr />
-            <h4>Payment Details</h4>
-            <form>
+            <div ng-show='selected.obj'>
+              <hr />
+              <h4>Payment Details</h4>
+              <br />
+              <div class="credit-card-input no-js" id="skeuocard">
+                <p class="no-support-warning">
+                  Either you have Javascript disabled, or you're using an unsupported browser, amigo! That's why you're seeing this old-school credit card input form instead of a fancy new Skeuocard. On the other hand, at least you know it gracefully degrades...
+                </p>
+                <label for="cc_type">Card Type</label>
+                <select name="cc_type">
+                  <option value="">...</option>
+                  <option value="visa">Visa</option>
+                  <option value="discover">Discover</option>
+                  <option value="mastercard">MasterCard</option>
+                  <option value="maestro">Maestro</option>
+                  <option value="jcb">JCB</option>
+                  <option value="unionpay">China UnionPay</option>
+                  <option value="amex">American Express</option>
+                  <option value="dinersclubintl">Diners Club</option>
+                </select>
+                <label for="cc_number">Card Number</label>
+                <input type="text" name="cc_number" id="cc_number" placeholder="XXXX XXXX XXXX XXXX" maxlength="19" size="19">
+                <label for="cc_exp_month">Expiration Month</label>
+                <input type="text" name="cc_exp_month" id="cc_exp_month" placeholder="00">
+                <label for="cc_exp_year">Expiration Year</label>
+                <input type="text" name="cc_exp_year" id="cc_exp_year" placeholder="00">
+                <label for="cc_name">Cardholder's Name</label>
+                <input type="text" name="cc_name" id="cc_name" placeholder="John Doe">
+                <label for="cc_cvc">Card Validation Code</label>
+                <input type="text" name="cc_cvc" id="cc_cvc" placeholder="123" maxlength="3" size="3">
+              </div>
 
-            </form>
+              <script type="text/javascript">
+                $(document).ready(function(){
+                  card = new Skeuocard($("#skeuocard"));
+                });
+              </script>
+              <br />
+              <br />
+              <button class='btn btn-primary btn-lg'>Change Plan</button>
+            </div>
           </div>
 
-          <div class='col-sm-6' ng-show='selectedPlan()'>
+          <div class='col-sm-6' ng-show='selected.obj'>
             <div class="panel panel-info">
               <div class="panel-heading">
                 <h3 class="panel-title">Plan Details</h3>
@@ -40,27 +76,27 @@
               <table class='table'>
                 <tr>
                   <th>Texts (per month)</th>
-                  <td>{{selectedPlan().texts}}</td>
+                  <td>{{selected.obj.texts}}</td>
                 </tr>
                 <tr>
                   <th>Emails (per month)</th>
-                  <td>{{selectedPlan().emails}}</td>
+                  <td>{{selected.obj.emails}}</td>
                 </tr>
                 <tr>
                   <th>Calls (per month)</th>
-                  <td>{{selectedPlan().calls}}</td>
+                  <td>{{selected.obj.calls}}</td>
                 </tr>
                 <tr>
                   <th>Max Users</th>
-                  <td>{{selectedPlan().max_users}}</td>
+                  <td>{{selected.obj.max_users}}</td>
                 </tr>
                 <tr>
                   <th>Monitors</th>
-                  <td>{{selectedPlan().max_monitors}}</td>
+                  <td>{{selected.obj.max_monitors}}</td>
                 </tr>
                 <tr>
                   <th>Price (per month)</th>
-                  <td>${{selectedPlan().price}} USD</td>
+                  <td>${{selected.obj.price}} USD</td>
                 </tr>
             </table>
           </div>
