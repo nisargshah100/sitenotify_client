@@ -1,4 +1,4 @@
-App.controller 'PlansCtrl', ($scope, PlanService, AccountService, DevProdService) ->
+App.controller 'PlansCtrl', ($scope, PlanService, AccountService, DevProdService, Restangular, ErrorService, $state) ->
   $scope.selected = {}
   $scope.card = {}
   $scope.months = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12']
@@ -14,6 +14,7 @@ App.controller 'PlansCtrl', ($scope, PlanService, AccountService, DevProdService
       $scope.selected.obj = _.find($scope.plans(), (x) -> x.id == parseInt(n))
 
     Stripe.setPublishableKey($scope.stripeKey())
+    $scope.selected.id = _.first($scope.plans()).id
 
   $scope.account = ->
     AccountService.current
@@ -22,14 +23,22 @@ App.controller 'PlansCtrl', ($scope, PlanService, AccountService, DevProdService
     _.filter(PlanService.plans, (x) -> x.id != AccountService.current.plan.id)
 
   $scope.changePlan = (stripeToken) ->
-    
+    AccountService.current.customPOST({ plan_id: $scope.selected.obj.id, stripe_token: stripeToken, name: $scope.card.name }, 'charges').then(
+      (data) ->
+        $state.transitionTo('dashboard.home')
+      (err) ->
+        $scope.error = ErrorService.fullMessages(err).join('. ')
+      $scope.card.processing = false
+    )
 
-  $scope.processPaymentFinished = (status, response) ->
+  $scope.processPaymentFinished = (status, response) =>
     if response.error
       $scope.error = response.error.message
-      $scope.$digest()
+      $scope.card.processing = false
     else
+      $scope.error = null
       $scope.changePlan(response.id)
+    $scope.$digest()
 
   $scope.processPayment = (form) ->
     $scope.card.processing = true
