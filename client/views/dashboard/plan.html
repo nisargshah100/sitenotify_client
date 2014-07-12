@@ -8,112 +8,135 @@
       </div>
 
       <div ng-if='account().admin'>
-        <div class='callout callout-info'>
-          Your subscription is prorated - you can cancel or upgrade anytime. You will only be charged
-          for the days you are with a plan. If you downgrade, the remaining balance will be applied to your account and can be used for future subscriptions. If you would like a refund, contact support.
-        </div>
+        <form id='payment-form' ng-submit='processPayment()'>
+          <div class='callout callout-info'>
+            Your subscription is prorated - you can cancel or upgrade anytime. You will only be charged
+            for the days you are with a plan. If you downgrade, the remaining balance will be refunded
+            to the charged card. 
+          </div>
 
-        <div class='row'>
-          <div class="form-group col-sm-6">
-            <label for="">Select A New Plan</label>
-            <div style='margin-top: -5px;'>
-              <span class='ui-select'>
-                <select ng-model="selected.id" class="ng-pristine ng-valid">
-                  <option value="{{plan.id}}" ng-repeat='plan in plans()'>
-                    {{plan.name}} (${{plan.price}})
-                  </option>
-                </select>
-              </span>
-            </div>
-            <div ng-show='selected.obj'>
-              <hr />
-              <h4>Payment Details</h4>
-              <div class='callout callout-danger' ng-show='error'>
-                {{error}}
+          <div class='row'>
+            <div class="form-group col-sm-6">
+              <label for="">Select A New Plan</label>
+              <div style='margin-top: -5px;'>
+                <span class='ui-select'>
+                  <select ng-model="selected.id" class="ng-pristine ng-valid">
+                    <option value="{{plan.id}}" ng-repeat='plan in plans()'>
+                      {{plan.name}} (${{plan.price}})
+                    </option>
+                  </select>
+                </span>
+              </div>
+              <div ng-show='selected.obj && !isFreeSelected()'>
+                <hr />
+                <h4>Payment Details</h4>
+
+                <div class='callout callout-danger' ng-show='error'>
+                  {{error}}
+                </div>
+
+                <div style='margin-top:20px;' ng-if='!selected.addNewCardView'>
+                  <label style='margin-bottom:-15px;'>Existing Payment Method:</label>
+                  <br />
+                  <div>
+                    <span class="ui-select">
+                      <select class="ng-pristine ng-valid" ng-model='selected.card_id' style='width:100%;'>
+                          <option ng-repeat='card in cards()' value="{{card.id}}" ng-selected='selected.card_id == card.id'>
+                            {{card.card_holder_name}}&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;{{card.last_four}}&nbsp;&nbsp;&nbsp;({{card.exp_month}}/{{card.exp_year}})
+                          </option>
+                      </select>
+                    </span>
+                  </div>
+
+                  <div style='text-align:right'>
+                    <a href='' ng-click='selected.addNewCardView = true'>Use A New Card</a>
+                  </div>
+                </div>
+                
+                <div ng-if='selected.addNewCardView' style='margin-top:20px;'>
+                  <div class='row'>
+                    <div class="form-group col-sm-8">
+                      <label>Card Number</label>
+                      <div>
+                        <input type="text" class="form-control ng-pristine ng-valid" data-stripe="number">
+                      </div>
+                    </div>
+                    <div class="form-group col-sm-4">
+                      <label>CVV</label>
+                      <div>
+                        <input type="text" class="form-control ng-pristine ng-valid" data-stripe="cvc">
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class='row'>
+                    <div class="form-group col-sm-6">
+                      <label>Card Holder Name</label>
+                      <div>
+                        <input type='text' class="form-control ng-pristine ng-valid" ng-model='card.name' />
+                      </div>
+                    </div>
+                    <div class="form-group col-sm-3">
+                      <label>Month</label>
+                      <div>
+                        <input type='text' data-stripe="exp-month" class="form-control ng-pristine ng-valid" />
+                      </div>
+                    </div>
+                    <div class="form-group col-sm-3">
+                      <label>Year</label>
+                      <div>
+                        <input type="text" class="form-control ng-pristine ng-valid" data-stripe="exp-year">
+                      </div>
+                    </div>
+                  </div>
+                  <div style='text-align:right'>
+                    <a href='' ng-click='selected.addNewCardView = false'>Use Existing Card</a>
+                  </div>
+                </div>
               </div>
               <br />
-              <form id="payment-form" ng-submit='processPayment()'>
-                <div class='row'>
-                  <div class="form-group col-sm-8">
-                    <label>Card Number</label>
-                    <div>
-                      <input type="text" class="form-control ng-pristine ng-valid" data-stripe="number">
-                    </div>
-                  </div>
-                  <div class="form-group col-sm-4">
-                    <label>CVV</label>
-                    <div>
-                      <input type="text" class="form-control ng-pristine ng-valid" data-stripe="cvc">
-                    </div>
-                  </div>
-                </div>
+              <button class='btn btn-primary btn-lg' ng-disabled='card.processing'>Change Plan</button>
+            </div>
 
-                <div class='row'>
-                  <div class="form-group col-sm-6">
-                    <label>Card Holder Name</label>
-                    <div>
-                      <input type='text' class="form-control ng-pristine ng-valid" ng-model='card.name' />
-                    </div>
-                  </div>
-                  <div class="form-group col-sm-3">
-                    <label>Month</label>
-                    <div>
-                      <input type='text' data-stripe="exp-month" class="form-control ng-pristine ng-valid" />
-                    </div>
-                  </div>
-                  <div class="form-group col-sm-3">
-                    <label>Year</label>
-                    <div>
-                      <input type="text" class="form-control ng-pristine ng-valid" data-stripe="exp-year">
-                    </div>
-                  </div>
+            <div class='col-sm-6' ng-show='selected.obj'>
+              <div class="panel panel-info">
+                <div class="panel-heading">
+                  <h3 class="panel-title">Plan Details</h3>
                 </div>
+                <table class='table'>
+                  <tr>
+                    <th>Texts (per month)</th>
+                    <td>{{selected.obj.texts}}</td>
+                  </tr>
+                  <tr>
+                    <th>Emails (per month)</th>
+                    <td>{{selected.obj.emails}}</td>
+                  </tr>
+                  <tr>
+                    <th>Calls (per month)</th>
+                    <td>{{selected.obj.calls}}</td>
+                  </tr>
+                  <tr>
+                    <th>Max Users</th>
+                    <td>{{selected.obj.max_users}}</td>
+                  </tr>
+                  <tr>
+                    <th>Monitors</th>
+                    <td>{{selected.obj.max_monitors}}</td>
+                  </tr>
+                  <tr>
+                    <th>Price (per month)</th>
+                    <td>${{selected.obj.price}} USD</td>
+                  </tr>
+              </table>
+            </div>
 
-                <br />
-                <button class='btn btn-primary btn-lg' ng-disabled='card.processing'>Change Plan</button>
-              </form>
+            <div class='alert alert-info'>
+              We are PCI Compliant. All credit card data is handled by <a href='http://stripe.com' target='_blank'>Stripe</a>.
             </div>
           </div>
-
-          <div class='col-sm-6' ng-show='selected.obj'>
-            <div class="panel panel-info">
-              <div class="panel-heading">
-                <h3 class="panel-title">Plan Details</h3>
-              </div>
-              <table class='table'>
-                <tr>
-                  <th>Texts (per month)</th>
-                  <td>{{selected.obj.texts}}</td>
-                </tr>
-                <tr>
-                  <th>Emails (per month)</th>
-                  <td>{{selected.obj.emails}}</td>
-                </tr>
-                <tr>
-                  <th>Calls (per month)</th>
-                  <td>{{selected.obj.calls}}</td>
-                </tr>
-                <tr>
-                  <th>Max Users</th>
-                  <td>{{selected.obj.max_users}}</td>
-                </tr>
-                <tr>
-                  <th>Monitors</th>
-                  <td>{{selected.obj.max_monitors}}</td>
-                </tr>
-                <tr>
-                  <th>Price (per month)</th>
-                  <td>${{selected.obj.price}} USD</td>
-                </tr>
-            </table>
-          </div>
-
-          <div class='alert alert-info'>
-            We are PCI Compliant. All credit card data is handled by <a href='http://stripe.com' target='_blank'>Stripe</a>.
-          </div>
         </div>
-      </div>
-
+      </form>
     </div>
   </div>
 </section>

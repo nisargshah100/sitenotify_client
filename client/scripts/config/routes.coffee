@@ -55,9 +55,12 @@ App.config ($stateProvider, $urlRouterProvider) ->
       url: '/dashboard/plan'
       templateUrl: 'views/dashboard/plan.html'
       resolve: {
-        plans: (PlanService) ->
+        plans: (currentUser, PlanService) ->
           if PlanService.plans.length == 0
             PlanService.fetchPlans()
+        cards: (accounts, CreditCardService) ->
+          if CreditCardService.cards.length == 0
+            CreditCardService.refresh()
       }
     }
 

@@ -5,4 +5,7 @@ App.service 'PlanService', (Restangular) ->
     Restangular.all('plans').getList().then (data) =>
       @plans = data
 
+  @freePlan = ->
+    _.find @plans, (x) -> x.price == '0.00' 
+
   @

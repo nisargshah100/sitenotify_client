@@ -1,7 +1,8 @@
-App.controller 'PlansCtrl', ($scope, PlanService, AccountService, DevProdService, Restangular, ErrorService, $state) ->
+App.controller 'PlansCtrl', ($scope, PlanService, AccountService, DevProdService, Restangular, ErrorService, $state, CreditCardService) ->
   $scope.selected = {}
   $scope.card = {}
   $scope.months = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12']
+  $scope.selected.addNewCardView = true
 
   $scope.stripeKey = ->
     if DevProdService.isDev()
@@ -15,6 +16,12 @@ App.controller 'PlansCtrl', ($scope, PlanService, AccountService, DevProdService
 
     Stripe.setPublishableKey($scope.stripeKey())
     $scope.selected.id = _.first($scope.plans()).id
+    $scope.selected.card_id = AccountService.current.default_card_id || _.first($scope.plans()).id
+
+    $scope.selected.addNewCardView = false if $scope.cards().length > 0
+
+  $scope.isFreeSelected = ->
+    parseInt($scope.selected.id) == parseInt(PlanService.freePlan().id)
 
   $scope.account = ->
     AccountService.current
@@ -22,13 +29,26 @@ App.controller 'PlansCtrl', ($scope, PlanService, AccountService, DevProdService
   $scope.plans = ->
     _.filter(PlanService.plans, (x) -> x.id != AccountService.current.plan.id)
 
-  $scope.changePlan = (stripeToken) ->
-    AccountService.current.customPOST({ plan_id: $scope.selected.obj.id, stripe_token: stripeToken, name: $scope.card.name }, 'charges').then(
+  $scope.cards = ->
+    CreditCardService.cards
+
+  $scope.addCard = (stripeToken) ->
+    AccountService.current.customPOST({ stripe_token: stripeToken, card_holder_name: $scope.card.name }, 'credit_cards').then(
       (data) ->
-        $state.transitionTo('dashboard.home')
+        $scope.changePlan(data.id)
       (err) ->
         $scope.error = ErrorService.fullMessages(err).join('. ')
-      $scope.card.processing = false
+        $scope.card.processing = false
+    )
+
+  $scope.changePlan = (card_id) ->
+    AccountService.current.customPOST({ plan_id: $scope.selected.obj.id, card_id: card_id }, 'charges').then(
+      (data) ->
+        $state.transitionTo('dashboard.home')
+        $scope.card.processing = false
+      (err) ->
+        $scope.error = 'We were unable to change your plan. Contact support for more details.'
+        $scope.card.processing = false
     )
 
   $scope.processPaymentFinished = (status, response) =>
@@ -37,11 +57,15 @@ App.controller 'PlansCtrl', ($scope, PlanService, AccountService, DevProdService
       $scope.card.processing = false
     else
       $scope.error = null
-      $scope.changePlan(response.id)
+      $scope.addCard(response.id)
     $scope.$digest()
 
   $scope.processPayment = (form) ->
     $scope.card.processing = true
-    Stripe.card.createToken $('#payment-form'), $scope.processPaymentFinished
-
+    if $scope.selected.addNewCardView
+      Stripe.card.createToken $('#payment-form'), $scope.processPaymentFinished
+    else
+      card_id = $scope.selected.card_id
+      card_id = null if $scope.isFreeSelected()
+      $scope.changePlan(card_id)
 
