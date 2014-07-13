@@ -23,6 +23,9 @@ App.controller 'PlansCtrl', ($scope, PlanService, AccountService, DevProdService
   $scope.isFreeSelected = ->
     parseInt($scope.selected.id) == parseInt(PlanService.freePlan().id)
 
+  $scope.isPlanCheaper = ->
+    $scope.selected.obj.price_in_cents < AccountService.current.plan.price_in_cents
+
   $scope.account = ->
     AccountService.current
 

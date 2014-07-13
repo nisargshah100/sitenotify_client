@@ -17,6 +17,11 @@
 
           <div class='row'>
             <div class="form-group col-sm-6">
+              <div class='alert alert-info'>
+                <label>Current Plan: </label>
+                <span>&nbsp;{{account().plan.name}}</span>
+              </div>
+
               <label for="">Select A New Plan</label>
               <div style='margin-top: -5px;'>
                 <span class='ui-select'>
@@ -27,7 +32,7 @@
                   </select>
                 </span>
               </div>
-              <div ng-show='selected.obj && !isFreeSelected()'>
+              <div ng-show='selected.obj && !isPlanCheaper()'>
                 <hr />
                 <h4>Payment Details</h4>
 
@@ -89,7 +94,7 @@
                       </div>
                     </div>
                   </div>
-                  <div style='text-align:right'>
+                  <div style='text-align:right' ng-if='cards().length > 0'>
                     <a href='' ng-click='selected.addNewCardView = false'>Use Existing Card</a>
                   </div>
                 </div>
