@@ -1,4 +1,4 @@
-App.controller 'PlansCtrl', ($scope, PlanService, AccountService, DevProdService, Restangular, ErrorService, $state, CreditCardService) ->
+App.controller 'PlansCtrl', ($scope, PlanService, AccountService, DevProdService, Restangular, ErrorService, $state, CreditCardService, $rootScope, $timeout) ->
   $scope.selected = {}
   $scope.card = {}
   $scope.months = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12']
@@ -47,6 +47,7 @@ App.controller 'PlansCtrl', ($scope, PlanService, AccountService, DevProdService
   $scope.changePlan = (card_id) ->
     AccountService.current.customPOST({ plan_id: $scope.selected.obj.id, card_id: card_id }, 'charges').then(
       (data) ->
+        $timeout -> $rootScope.$broadcast('dashboardFlashEvent', 'success', 'Your plan has been changed. Once processing is done, your account details will update to reflect the new plan.')
         $state.transitionTo('dashboard.home')
         $scope.card.processing = false
       (err) ->

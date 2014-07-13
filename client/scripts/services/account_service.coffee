@@ -1,4 +1,4 @@
-App.service 'AccountService', (Restangular, $cookies, UserService) ->
+App.service 'AccountService', (Restangular, $cookies, UserService, PubsubService) ->
   @current = null
   @currentAccountMembers = []
   @currentAccountInvites = []
@@ -6,8 +6,10 @@ App.service 'AccountService', (Restangular, $cookies, UserService) ->
   
   @refresh = ->
     Restangular.all('accounts').getList().then (data) =>
+      firstLoad = true if @current == null
       @accounts = data
       @loadCurrent()
+      PubsubService.setup(@current) if firstLoad
 
   @setCurrent = (acc) ->
     newCurrent = _.find @accounts, ((a) -> a.id == acc.id)

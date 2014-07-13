@@ -1,5 +1,9 @@
 <div class="view-container" ng-controller='DashboardCtrl'>
 
+  <div class='callout callout-{{flash.type}}' style='margin-top: 0px;' ng-if='flash.msg'>
+    {{flash.msg}}
+  </div>
+
   <div class="row">
     <div class="col-md-9">
       <div class="panel mini-box">
