@@ -21,8 +21,17 @@ App.controller 'SettingsCtrl', ($scope, $modal, Restangular, AccountService, $co
       $scope.inviteSentUser.data = data
       AccountService.fetchInvites()
 
-App.controller 'settingsGeneralCtrl', ($scope, AccountService) ->
+App.controller 'settingsGeneralCtrl', ($scope, AccountService, ErrorService) ->
   $scope.account = angular.copy(AccountService.current)
+
+  $scope.updateAccount = ->
+    $scope.account.patch({ name: $scope.account.name }).then(
+      (data) ->
+        AccountService.refresh()
+        $scope.errors = null
+      (err) ->
+        $scope.errors = ErrorService.fullMessages(err)
+    )
 
 App.controller 'settingsMemberCtrl', ($scope, AccountService, Restangular, UserService) ->
 
