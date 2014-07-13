@@ -18,11 +18,15 @@ App.service 'PubsubService', ($injector) ->
 
   @account_updated = ->
     $injector.get('AccountService').refresh()
-    
+  
+  @card_updated = ->
+    $injector.get('CreditCardService').refresh()
+
   # mapping
   
   @mapping = {
-    'account_updated': @account_updated
+    'account_updated': @account_updated,
+    'card_updated': @card_updated
   }
 
   @
