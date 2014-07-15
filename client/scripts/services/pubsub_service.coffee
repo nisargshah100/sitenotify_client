@@ -22,11 +22,16 @@ App.service 'PubsubService', ($injector) ->
   @card_updated = ->
     $injector.get('CreditCardService').refresh()
 
+  @members_updated = ->
+    console.log 'members updated'
+    $injector.get('AccountService').fetchMembers()
+
   # mapping
   
   @mapping = {
     'account_updated': @account_updated,
-    'card_updated': @card_updated
+    'card_updated': @card_updated,
+    'members_updated': @members_updated
   }
 
   @

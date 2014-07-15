@@ -51,7 +51,7 @@ App.controller 'PlansCtrl', ($scope, PlanService, AccountService, DevProdService
         $state.transitionTo('dashboard.home')
         $scope.card.processing = false
       (err) ->
-        $scope.error = 'We were unable to change your plan. Contact support for more details.'
+        $scope.planError = ErrorService.fullMessages(err).join('. ')
         $scope.card.processing = false
     )
 

@@ -59,8 +59,7 @@ App.config ($stateProvider, $urlRouterProvider) ->
           if PlanService.plans.length == 0
             PlanService.fetchPlans()
         cards: (accounts, CreditCardService) ->
-          if CreditCardService.cards.length == 0
-            CreditCardService.refresh()
+          CreditCardService.refresh()
       }
     }
 
