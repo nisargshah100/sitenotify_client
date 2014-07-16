@@ -5,19 +5,45 @@
   </div>
 
   <div class="row">
-    <div class="col-md-9">
-      <div class="panel mini-box">
-        <span class="box-icon bg-success">
-          <i class="fa fa-rocket"></i>
-        </span>
-        <div class="box-info">
-          <p class="size-h2">25 <span class="size-h4">%</span></p>
-          <p class="text-muted"><span data-i18n="Growth">Growth</span></p>
+    <div class="col-md-8">
+
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <div style='text-align:right;'>
+            <a ui-sref='dashboard.monitor.new' class='btn btn btn-primary'>New Monitor</a>
+          </div>
         </div>
       </div>
+
+      <section class="panel panel-default">
+        <div class="panel-heading"><span class="glyphicon glyphicon-th"></span>&nbsp;&nbsp;&nbsp;Monitors & Alerts</div>
+        <div class="panel-body">
+          <h4>Monitors</h4>
+          <p>
+            A monitor will help you track problems with your website. When you create a monitor, we will
+            keep checking your website to make sure it is functioning properly. There are two kinds of monitors.
+          </p>
+          <br />
+          <h4>Normal Monitor</h4>
+          <p>
+            A normal monitor is one that will ping your site and look for a valid response code. This is a basic monitor that tells you some information but doesn't act like an actual user on your site.
+          </p>
+          <br />
+          <h4>UserLike Monitor</h4>
+          <p>
+            This monitor behaves like an actual user. It fires up a browser, visits your website and records a bunch of information that you can view later. It tracks your website load times and in case of an error, can take HAR representation and snapshot on your website that can be useful for debugging later. UserLike Monitors can send alerts on additional parameters like "Site taking too long to load"
+          </p>
+          <br />
+          <h4>Alerts</h4>
+          <p>
+            When we detect an issue, we will alert you. You can specific multiple kinds of alert like email, texts or calls. This alert can be to one person or multiple people. You can also choose to be notified when the issue is resolved.
+          </p>
+        </div>
+      </section>
+
     </div>
 
-    <div class='col-md-3'>
+    <div class='col-md-4'>
       <div class="panel panel-info">
         <div class="panel-heading">
           <h3 class="panel-title">Account Details</h3>
@@ -51,6 +77,10 @@
           <tr>
             <th>Monitors</th>
             <td style='text-align:right;'>{{account().total_monitors}} / {{plan().max_monitors}}</td>
+          </tr>
+          <tr>
+            <th>UserLike Monitors</th>
+            <td style='text-align:right;'>{{account().user_like_monitors}} / {{plan().max_user_like_monitors}}</td>
           </tr>
         </table>
       </div>

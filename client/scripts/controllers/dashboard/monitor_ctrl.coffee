@@ -1,5 +1,5 @@
-App.controller 'MonitorCtrl', ($scope, UserService) ->
-  $scope.monitor = { interval: 10, url: 'http://', emailNotification: true, email: UserService.currentUser.email }
+App.controller 'MonitorNewCtrl', ($scope, UserService, AccountService, ErrorService, MonitorService, $state) ->
+  $scope.monitor = { interval: 10, url: 'http://' }
   $scope.intervalOptions = [
     { value: 1, text: 'minute' }
     { value: 2, text: '2 minutes'}
@@ -10,8 +10,15 @@ App.controller 'MonitorCtrl', ($scope, UserService) ->
     { value: 60, text: 'hour'}
   ]
 
-  $scope.phoneNumberRequired = ->
-    if $scope.monitor.textNotification || $scope.monitor.callNotification && !UserService.getCurrentUser?.phone?
-      true
-    else
-      false
+  $scope.saveMonitor = ->
+    AccountService.current.customPOST($scope.monitor, 'site_monitors').then(
+      (data) ->
+        MonitorService.refresh()
+        $state.transitionTo('dashboard.monitor.show', { id: data.id })
+      (err) ->
+        $scope.errors = ErrorService.fullMessages(err)
+    )
+
+App.controller 'MonitorCtrl', ($scope, MonitorService) ->
+  $scope.monitor = ->
+    MonitorService.current

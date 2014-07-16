@@ -27,8 +27,10 @@ App.config ($stateProvider, $urlRouterProvider) ->
       resolve: {
         currentUser: (UserService) ->
           UserService.currentUser || UserService.refresh()
-        accounts: (AccountService) ->
+        accounts: (currentUser, AccountService) ->
           AccountService.refresh()
+        monitors: (accounts, MonitorService) ->
+          MonitorService.refresh()
       }
     }
 
@@ -41,14 +43,30 @@ App.config ($stateProvider, $urlRouterProvider) ->
       template: '<div ui-view></div>'
     }
 
+    .state 'dashboard.alerts', {
+      template: '<div ui-view></div>'
+    }
+
     .state 'dashboard.monitor.new', {
-      url: '/dashboard/monitor/new'
+      url: '/dashboard/monitors/new'
       templateUrl: 'views/dashboard/monitor/new.html'
+    }
+
+    .state 'dashboard.monitor.show', {
+      url: '/dashboard/monitors/:id'
+      templateUrl: 'views/dashboard/monitor/show.html'
+      onEnter: (MonitorService, $stateParams) ->
+        MonitorService.setCurrent(parseInt($stateParams.id))
     }
 
     .state 'dashboard.settings', {
       url: '/dashboard/settings'
       templateUrl: 'views/dashboard/settings.html'
+    }
+
+    .state 'dashboard.alerts.index', {
+      url: '/dashboard/alerts',
+      templateUrl: 'views/dashboard/alerts/index.html'
     }
 
     .state 'dashboard.plan', {
