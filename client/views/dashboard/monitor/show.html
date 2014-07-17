@@ -3,7 +3,10 @@
       <strong><span class="glyphicon glyphicon-th"></span>&nbsp;&nbsp;&nbsp;{{monitor().name}}</strong>
     </div>
     <div class="panel-body">
-      Boo yeah!
+      <div class='callout callout-danger' ng-if='!monitor()'>
+        <h4>Access Denied</h4>
+        <p>You don't have access to this monitor.</p>
+      </div>
     </div>
   </div>
 </div>

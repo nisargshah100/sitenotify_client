@@ -14,4 +14,4 @@ App.controller 'NavCtrl', ($scope, $rootScope, UserService, $state, AccountServi
 
   $scope.setNewAccount = (acc) ->
     AccountService.setCurrent(acc)
-    $rootScope.$broadcast('new_account')
+    $rootScope.$broadcast('new_account', acc.id)

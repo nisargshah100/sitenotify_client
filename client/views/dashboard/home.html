@@ -7,7 +7,7 @@
   <div class="row">
     <div class="col-md-8">
 
-      <div class="panel panel-default">
+      <div class="panel panel-default" ng-if='account().admin'>
         <div class="panel-body">
           <div style='text-align:right;'>
             <a ui-sref='dashboard.monitor.new' class='btn btn btn-primary'>New Monitor</a>
@@ -15,7 +15,43 @@
         </div>
       </div>
 
-      <section class="panel panel-default">
+      <div class='row'>
+        <div class='col-md-12' ng-if='monitors() && monitors().length > 5'>
+          <input type='text' class='form-control' style='width:100%; margin-bottom: 15px;' placeholder='Search' ng-model='monitorsFilter.name' />
+        </div>
+        <div class='col-md-6' ng-repeat='monitor in monitors() | filter: monitorsFilter' ng-if='monitors()' ng-click='goToMonitor(monitor)'>
+          <section class='monitor-widget panel panel-default'>
+            <div class="panel-heading">
+              {{monitor.name}}
+              <div style='float:right; margin-top: -3px;'>
+                <img ng-src='/images/{{monitorStatusImage(monitor)}}' style='height: 24px; width: 24px;'/>
+              </div>
+            </div>
+            <div class='panel-body' ng-if='!monitor.last_check'>
+              <p>There are no checks for this monitor yet. Should be happening soon!</p>
+            </div>
+            <table class='table monitor-widget-body' ng-if='monitor.last_check'>
+              <tbody>
+                <tr>
+                  <th>Interval</th>
+                  <td style='text-align: right'>every {{monitor.interval}} <span ng-pluralize count='monitor.interval' when="{'1': 'minute', 'other': 'minutes'}"></span></td>
+                </tr>
+                <tr>
+                  <th>Last Checked</th>
+                  <td style='text-align:right'><span am-time-ago='monitor.last_checked'></span></td>
+                </tr>
+                <tr>
+                  <th>Response Time</th>
+                  <td style='text-align:right'>{{monitor.last_check.response_time}} ms</td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+          <div ng-if='$odd' style='height: 1px;'>&nbsp;</div>
+        </div>
+      </div>
+
+      <section class="panel panel-default" ng-if='!monitors()'>
         <div class="panel-heading"><span class="glyphicon glyphicon-th"></span>&nbsp;&nbsp;&nbsp;Monitors & Alerts</div>
         <div class="panel-body">
           <h4>Monitors</h4>
@@ -77,10 +113,6 @@
           <tr>
             <th>Monitors</th>
             <td style='text-align:right;'>{{account().total_monitors}} / {{plan().max_monitors}}</td>
-          </tr>
-          <tr>
-            <th>UserLike Monitors</th>
-            <td style='text-align:right;'>{{account().user_like_monitors}} / {{plan().max_user_like_monitors}}</td>
           </tr>
         </table>
       </div>

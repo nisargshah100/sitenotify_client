@@ -7,5 +7,6 @@
   'ui.router', 
   'restangular',
   'ui.gravatar',
-  'ngCookies'
+  'ngCookies',
+  'angularMoment'
 ])

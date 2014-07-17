@@ -18,12 +18,12 @@ App.service 'PubsubService', ($injector) ->
 
   @account_updated = ->
     $injector.get('AccountService').refresh()
+    $injector.get('MonitorService').refresh()
   
   @card_updated = ->
     $injector.get('CreditCardService').refresh()
 
   @members_updated = ->
-    console.log 'members updated'
     $injector.get('AccountService').fetchMembers()
 
   # mapping

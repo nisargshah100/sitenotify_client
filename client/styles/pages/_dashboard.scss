@@ -1,1 +1,9 @@
 // .page-dashboard {}
+
+.monitor-widget {
+  cursor: pointer;
+}
+
+.monitor-widget:hover {
+  border-color: #ccc;
+}

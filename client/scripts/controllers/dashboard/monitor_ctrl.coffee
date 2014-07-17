@@ -13,12 +13,17 @@ App.controller 'MonitorNewCtrl', ($scope, UserService, AccountService, ErrorServ
   $scope.saveMonitor = ->
     AccountService.current.customPOST($scope.monitor, 'site_monitors').then(
       (data) ->
-        MonitorService.refresh()
-        $state.transitionTo('dashboard.monitor.show', { id: data.id })
+        MonitorService.refresh =>
+          $state.transitionTo('dashboard.monitor.show', { id: data.id })
       (err) ->
         $scope.errors = ErrorService.fullMessages(err)
     )
 
-App.controller 'MonitorCtrl', ($scope, MonitorService) ->
+App.controller 'MonitorCtrl', ($scope, MonitorService, $stateParams) ->
+
+  $scope.$on 'new_account', (event) =>
+    MonitorService.refresh =>
+      MonitorService.setCurrent(parseInt($stateParams.id))
+
   $scope.monitor = ->
     MonitorService.current
