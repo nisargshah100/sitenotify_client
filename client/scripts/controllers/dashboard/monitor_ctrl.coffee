@@ -19,7 +19,14 @@ App.controller 'MonitorNewCtrl', ($scope, UserService, AccountService, ErrorServ
         $scope.errors = ErrorService.fullMessages(err)
     )
 
-App.controller 'MonitorCtrl', ($scope, MonitorService, $stateParams) ->
+App.controller 'MonitorCtrl', ($scope, MonitorService, $stateParams, $interval) ->
+
+  minuteInterval = $interval((() -> 
+    MonitorService.getStats(MonitorService.current.id)
+  ), 60000)
+
+  $scope.$on "$destroy", ->
+    $interval.cancel(minuteInterval)
 
   $scope.$on 'new_account', (event) =>
     MonitorService.refresh =>
@@ -27,3 +34,9 @@ App.controller 'MonitorCtrl', ($scope, MonitorService, $stateParams) ->
 
   $scope.monitor = ->
     MonitorService.current
+
+  $scope.stats = ->
+    MonitorService.currentStats
+
+  $scope.uptime = ->
+    (parseFloat(MonitorService.currentStats.total_success_checks) / MonitorService.currentStats.total_checks * 100).toFixed(2)

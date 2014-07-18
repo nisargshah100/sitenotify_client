@@ -1,12 +1,31 @@
-<div ng-controller='MonitorCtrl' class='panel panel-default'>
-  <div class="panel-heading">
-      <strong><span class="glyphicon glyphicon-th"></span>&nbsp;&nbsp;&nbsp;{{monitor().name}}</strong>
-    </div>
-    <div class="panel-body">
-      <div class='callout callout-danger' ng-if='!monitor()'>
-        <h4>Access Denied</h4>
-        <p>You don't have access to this monitor.</p>
-      </div>
+<div ng-controller='MonitorCtrl'>
+  <div class='row'>
+    <div class='col-md-8'></div>
+    <div class='col-md-4'>
+      <ul class="list-group" ng-if='stats()'>
+        <li class="list-group-item" ng-if='stats().total_success_checks'>
+          <i class="fa fa-chevron-circle-up" style='margin-right:10px;'></i>
+          <span style='font-weight:bold; margin-right:5px; width:100%;'>{{uptime()}}%</span>
+          uptime
+        </li>
+        <li class="list-group-item" ng-if='stats().average'>
+          <i class="fa fa-arrows-h" style='margin-right:10px;'></i>
+          <span style='font-weight:bold; margin-right:5px;'>{{stats().average}}</span> 
+          average load time
+        </li>
+        <li class="list-group-item" ng-if='stats().min'>
+          <i class="fa fa-caret-down" style='margin-right:10px;'></i>
+          <span style='font-weight:bold; margin-right:5px;'>{{stats().min}}</span> 
+          lowest load time
+        </li>
+        <li class="list-group-item" ng-if='stats().max'>
+          <i class="fa fa-caret-up" style='margin-right:10px;'></i>
+          <span style='font-weight:bold; margin-right:5px;'>{{stats().max}}</span> 
+          highest load time
+        </li>
+      </ul>
     </div>
   </div>
+
+  
 </div>
