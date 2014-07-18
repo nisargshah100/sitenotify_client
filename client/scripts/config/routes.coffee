@@ -52,6 +52,13 @@ App.config ($stateProvider, $urlRouterProvider) ->
       templateUrl: 'views/dashboard/monitor/new.html'
     }
 
+    .state 'dashboard.monitor.edit', {
+      url: '/dashboard/monitors/:id/edit'
+      templateUrl: 'views/dashboard/monitor/edit.html'
+      onEnter: (MonitorService, $stateParams) ->
+        MonitorService.setCurrent(parseInt($stateParams.id))
+    }
+
     .state 'dashboard.monitor.show', {
       url: '/dashboard/monitors/:id'
       templateUrl: 'views/dashboard/monitor/show.html'

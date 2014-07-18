@@ -51,7 +51,7 @@
         </div>
       </div>
 
-      <section class="panel panel-default" ng-if='!monitors()'>
+      <section class="panel panel-default" ng-if='monitors() && monitors().length == 0'>
         <div class="panel-heading"><span class="glyphicon glyphicon-th"></span>&nbsp;&nbsp;&nbsp;Monitors & Alerts</div>
         <div class="panel-body">
           <h4>Monitors</h4>

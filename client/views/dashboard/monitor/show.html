@@ -1,7 +1,31 @@
 <div ng-controller='MonitorCtrl'>
   <div class='row'>
-    <div class='col-md-8'></div>
+    <div class='col-md-8'>
+      <div class='panel panel-info'>
+        <div class='panel-heading'>
+          <strong>{{monitor().name}}</strong>
+          <div style='float:right'>{{monitor().url}}</div>
+        </div>
+        <div class='panel-body'>
+          Boo
+        </div>
+      </div>
+    </div>
     <div class='col-md-4'>
+
+      <ul class="list-group">
+        <li class="list-group-item">
+          <img src='/images/check.png' style='width: 30px; height: 30px; display: inline; margin-right: 10px;' ng-if='site_status() == "up"'></img>
+          <img src='/images/error.png' style='width: 30px; height: 30px; display: inline; margin-right: 10px;' ng-if='site_status() == "down"'></img>
+          <img src='/images/dash.png' style='width: 30px; height: 30px; display: inline; margin-right: 10px;' ng-if='site_status() == "unknown"'></img>
+          Site is {{site_status()}}
+        </li>
+        <li class="list-group-item" style='text-align:right'>
+          <a class='btn btn-line-primary btn-sm'>Add / Edit Alerts</a>
+          <a ui-sref='dashboard.monitor.edit({id: monitor().id})' class='btn btn-line-primary btn-sm'>Edit Monitor</a>
+        </li>
+      </ul>
+
       <ul class="list-group" ng-if='!stats()'>
         <li class="list-group-item">
           <img src='/images/loading.gif' style='width: 32px; height: 32px; display: inline; margin-right: 10px;'></img>

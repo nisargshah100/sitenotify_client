@@ -19,9 +19,32 @@ App.controller 'MonitorNewCtrl', ($scope, UserService, AccountService, ErrorServ
         $scope.errors = ErrorService.fullMessages(err)
     )
 
+App.controller 'MonitorEditCtrl', ($scope, UserService, AccountService, ErrorService, MonitorService, $state) ->
+  $scope.monitor = angular.copy(MonitorService.current)
+
+  $scope.intervalOptions = [
+    { value: 1, text: 'minute' }
+    { value: 2, text: '2 minutes'}
+    { value: 5, text: '5 minutes'}
+    { value: 10, text: '10 minutes'}
+    { value: 15, text: '15 minutes'}
+    { value: 30, text: '30 minutes'}
+    { value: 60, text: 'hour'}
+  ]
+
+  $scope.saveMonitor = ->
+    $scope.monitor.put($scope.monitor).then(
+      (data) ->
+        MonitorService.refresh =>
+          $state.transitionTo('dashboard.monitor.show', { id: $scope.monitor.id })
+      (err) ->
+        $scope.errors = ErrorService.fullMessages(err)
+    )
+
 App.controller 'MonitorCtrl', ($scope, MonitorService, $stateParams, $interval) ->
 
   minuteInterval = $interval((() -> 
+    MonitorService.refresh => MonitorService.setCurrent(parseInt($stateParams.id))
     MonitorService.getStats(MonitorService.current.id)
   ), 60000)
 
@@ -31,6 +54,11 @@ App.controller 'MonitorCtrl', ($scope, MonitorService, $stateParams, $interval) 
   $scope.$on 'new_account', (event) =>
     MonitorService.refresh =>
       MonitorService.setCurrent(parseInt($stateParams.id))
+
+  $scope.site_status = ->
+    return 'unknown' if !MonitorService.current.last_check
+    s = MonitorService.current.last_check.status_success
+    if s then 'up' else 'down'
 
   $scope.monitor = ->
     MonitorService.current

@@ -1,0 +1,38 @@
+<form class="ng-pristine ng-valid" ng-controller='MonitorEditCtrl' ng-submit='saveMonitor()'>
+  <section class="panel panel-default">
+    <div class="panel-heading">
+      <strong><span class="glyphicon glyphicon-th"></span>&nbsp;&nbsp;&nbsp;Edit Monitor</strong>
+    </div>
+    <div class="panel-body">
+
+      <div class='alert alert-danger' ng-if='errors'>
+        <ul ng-repeat='error in errors'>
+          <li>{{error}}</li>
+        </ul>
+      </div>
+
+      <div class="form-group">
+        <label>Website Name</label>
+        <div>
+          <input type="text" class="form-control" ng-model='monitor.name'>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Website URL</label>
+        <div>
+          <input type="text" class="form-control" ng-model='monitor.url'>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Check this website every</label>
+        <span class="ui-select" style='margin-left: 7px;'>
+          <select ng-model='monitor.interval' ng-options='obj.value as obj.text for obj in intervalOptions'>
+          </select>
+        </span>
+      </div>
+      <div class='form-group text-right'>
+        <button class='btn btn-lg btn-success'>Save Monitor</button>
+      </div>
+    </div>
+  </section>
+</form>
