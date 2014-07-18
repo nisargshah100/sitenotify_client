@@ -2,6 +2,11 @@
   <div class='row'>
     <div class='col-md-8'></div>
     <div class='col-md-4'>
+      <ul class="list-group" ng-if='!stats()'>
+        <li class="list-group-item">
+          <img src='/images/loading.gif' style='width: 32px; height: 32px; display: inline; margin-right: 10px;'></img>
+          Loading Stats
+      </ul>
       <ul class="list-group" ng-if='stats()'>
         <li class="list-group-item" ng-if='stats().total_success_checks'>
           <i class="fa fa-chevron-circle-up" style='margin-right:10px;'></i>
