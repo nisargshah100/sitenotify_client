@@ -65,7 +65,6 @@ App.config ($stateProvider, $urlRouterProvider) ->
       onEnter: (MonitorService, $stateParams) ->
         MonitorService.currentStats = null
         MonitorService.setCurrent(parseInt($stateParams.id))
-        MonitorService.getStats($stateParams.id)
     }
 
     .state 'dashboard.settings', {

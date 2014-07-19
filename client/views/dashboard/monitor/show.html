@@ -21,38 +21,48 @@
           Site is {{site_status()}}
         </li>
         <li class="list-group-item" style='text-align:right'>
-          <a class='btn btn-line-primary btn-sm'>Add / Edit Alerts</a>
           <a ui-sref='dashboard.monitor.edit({id: monitor().id})' class='btn btn-line-primary btn-sm'>Edit Monitor</a>
+          <button class='btn btn-line-danger btn-sm' ng-click='deleteMonitor()'>Delete Monitor</button>
         </li>
       </ul>
 
-      <ul class="list-group" ng-if='!stats()'>
-        <li class="list-group-item">
-          <img src='/images/loading.gif' style='width: 32px; height: 32px; display: inline; margin-right: 10px;'></img>
-          Loading Stats
-      </ul>
-      <ul class="list-group" ng-if='stats()'>
-        <li class="list-group-item" ng-if='stats().total_success_checks'>
-          <i class="fa fa-chevron-circle-up" style='margin-right:10px;'></i>
-          <span style='font-weight:bold; margin-right:5px; width:100%;'>{{uptime()}}%</span>
-          uptime
-        </li>
-        <li class="list-group-item" ng-if='stats().average'>
-          <i class="fa fa-arrows-h" style='margin-right:10px;'></i>
-          <span style='font-weight:bold; margin-right:5px;'>{{stats().average}}</span> 
-          average load time
-        </li>
-        <li class="list-group-item" ng-if='stats().min'>
-          <i class="fa fa-caret-down" style='margin-right:10px;'></i>
-          <span style='font-weight:bold; margin-right:5px;'>{{stats().min}}</span> 
-          lowest load time
-        </li>
-        <li class="list-group-item" ng-if='stats().max'>
-          <i class="fa fa-caret-up" style='margin-right:10px;'></i>
-          <span style='font-weight:bold; margin-right:5px;'>{{stats().max}}</span> 
-          highest load time
-        </li>
-      </ul>
+      <div ng-controller='MonitorStatsCtrl'>
+
+        <ul class="list-group" ng-if='!stats()'>
+          <li class="list-group-item">
+            <img src='/images/loading.gif' style='width: 32px; height: 32px; display: inline; margin-right: 10px;'></img>
+            Loading Stats
+        </ul>
+
+        <ul class="list-group" ng-if='stats()'>
+          <div class="btn-group">
+            <label class="btn btn-default" ng-model="monitor.range" btn-radio="'daily'">Daily</label>
+            <label class="btn btn-default" ng-model="monitor.range" btn-radio="'weekly'">Weekly</label>
+            <label class="btn btn-default" ng-model="monitor.range" btn-radio="'forever'">Forever</label>
+          </div>
+
+          <li class="list-group-item" ng-if='stats().total_success_checks'>
+            <i class="fa fa-chevron-circle-up" style='margin-right:10px;'></i>
+            <span style='font-weight:bold; margin-right:5px; width:100%;'>{{uptime()}}%</span>
+            uptime
+          </li>
+          <li class="list-group-item" ng-if='stats().average'>
+            <i class="fa fa-arrows-h" style='margin-right:10px;'></i>
+            <span style='font-weight:bold; margin-right:5px;'>{{stats().average}}</span> 
+            average load time
+          </li>
+          <li class="list-group-item" ng-if='stats().min'>
+            <i class="fa fa-caret-down" style='margin-right:10px;'></i>
+            <span style='font-weight:bold; margin-right:5px;'>{{stats().min}}</span> 
+            lowest load time
+          </li>
+          <li class="list-group-item" ng-if='stats().max'>
+            <i class="fa fa-caret-up" style='margin-right:10px;'></i>
+            <span style='font-weight:bold; margin-right:5px;'>{{stats().max}}</span> 
+            highest load time
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
 

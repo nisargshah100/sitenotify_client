@@ -19,7 +19,7 @@ App.controller 'MonitorNewCtrl', ($scope, UserService, AccountService, ErrorServ
         $scope.errors = ErrorService.fullMessages(err)
     )
 
-App.controller 'MonitorEditCtrl', ($scope, UserService, AccountService, ErrorService, MonitorService, $state) ->
+App.controller 'MonitorEditCtrl', ($scope, UserService, AccountService, ErrorService, MonitorService, $state, LoggerService) ->
   $scope.monitor = angular.copy(MonitorService.current)
 
   $scope.intervalOptions = [
@@ -37,15 +37,54 @@ App.controller 'MonitorEditCtrl', ($scope, UserService, AccountService, ErrorSer
       (data) ->
         MonitorService.refresh =>
           $state.transitionTo('dashboard.monitor.show', { id: $scope.monitor.id })
+          LoggerService.success("Monitor changed", 1000)
       (err) ->
         $scope.errors = ErrorService.fullMessages(err)
     )
 
-App.controller 'MonitorCtrl', ($scope, MonitorService, $stateParams, $interval) ->
+App.controller 'MonitorStatsCtrl', ($scope, MonitorService, $interval) ->
+  $scope.monitor.range = 'forever'
+  $scope.startDate = moment().startOf('day')
+  $scope.endDate = moment().endOf('day')
+
+  $scope.$watch 'monitor.range', -> $scope.setRange()
+
+  minuteInterval = $interval((() -> 
+    MonitorService.getStats(MonitorService.current.id, $scope.startDate, $scope.endDate)
+  ), 60000)
+
+  $scope.$on "$destroy", ->
+    $interval.cancel(minuteInterval)
+
+  $scope.setRange = ->
+    r = $scope.monitor.range
+    if r == 'daily'
+      $scope.startDate = moment().startOf('day')
+      $scope.endDate = moment().endOf('day')
+    else if r == 'weekly'
+      $scope.startDate = moment().startOf('week')
+      $scope.endDate = moment().endOf('week')
+    else
+      $scope.startDate = null
+      $scope.endDate = null
+
+    MonitorService.getStats(MonitorService.current.id, $scope.startDate, $scope.endDate)
+
+  $scope.site_status = ->
+    return 'unknown' if !MonitorService.current.last_check
+    s = MonitorService.current.last_check.status_success
+    if s then 'up' else 'down'
+
+  $scope.stats = ->
+    MonitorService.currentStats
+
+  $scope.uptime = ->
+    (parseFloat(MonitorService.currentStats.total_success_checks) / MonitorService.currentStats.total_checks * 100).toFixed(2)
+
+App.controller 'MonitorCtrl', ($scope, MonitorService, $stateParams, $interval, $state, LoggerService) ->
 
   minuteInterval = $interval((() -> 
     MonitorService.refresh => MonitorService.setCurrent(parseInt($stateParams.id))
-    MonitorService.getStats(MonitorService.current.id)
   ), 60000)
 
   $scope.$on "$destroy", ->
@@ -55,16 +94,16 @@ App.controller 'MonitorCtrl', ($scope, MonitorService, $stateParams, $interval) 
     MonitorService.refresh =>
       MonitorService.setCurrent(parseInt($stateParams.id))
 
-  $scope.site_status = ->
-    return 'unknown' if !MonitorService.current.last_check
-    s = MonitorService.current.last_check.status_success
-    if s then 'up' else 'down'
+  $scope.deleteMonitor = ->
+    if confirm('When a monitor is deleted, we delete all its data. We cannot recover once you delete the monitor!')
+      MonitorService.current.remove().then(
+        (data) ->
+          MonitorService.refresh()
+          LoggerService.success('The monitor has been removed')
+          $state.transitionTo('dashboard.home')
+        (err) ->
+          LoggerService.error('Foo Bar')
+      )
 
   $scope.monitor = ->
     MonitorService.current
-
-  $scope.stats = ->
-    MonitorService.currentStats
-
-  $scope.uptime = ->
-    (parseFloat(MonitorService.currentStats.total_success_checks) / MonitorService.currentStats.total_checks * 100).toFixed(2)
