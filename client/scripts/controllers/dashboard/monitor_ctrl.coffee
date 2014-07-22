@@ -118,6 +118,7 @@ App.controller 'MonitorDownOrSlowCtrl', ($scope, $interval, MonitorService) ->
     $interval.cancel(minuteInterval)
 
   $scope.init = ->
+    MonitorService.lastFailed = null
     MonitorService.getLastFailed()
 
   $scope.checks = ->
