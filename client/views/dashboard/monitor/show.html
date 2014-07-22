@@ -88,6 +88,24 @@
             highest load time
           </li>
         </ul>
+
+        <div ng-controller='MonitorDownOrSlowCtrl' ng-init='init()'>
+          <div class='panel panel-danger' ng-if='checks()'>
+            <div class='panel-heading'>
+              Failed / Slow Requests
+            </div>
+            <table class='table'>
+              <tr ng-repeat='check in checks()'>
+                <td>
+                  <label class='badge badge-danger' ng-if='check.status_success == false'>down</label>
+                  <label class='badge badge-danger' ng-if='check.status_success == true'>slow</label>
+                  &nbsp;&nbsp;&nbsp;{{done_processing_time(check)}}
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+
       </div>
     </div>
   </div>

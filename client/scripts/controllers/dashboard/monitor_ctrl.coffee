@@ -97,7 +97,7 @@ App.controller 'MonitorCtrl', ($scope, MonitorService, $stateParams, $interval, 
           LoggerService.success('The monitor has been removed')
           $state.transitionTo('dashboard.home')
         (err) ->
-          LoggerService.error('Foo Bar')
+          LoggerService.error('We were unable to remove this monitor')
       )
 
   $scope.monitor = ->
@@ -107,5 +107,24 @@ App.controller 'MonitorCtrl', ($scope, MonitorService, $stateParams, $interval, 
     return 'unknown' if !MonitorService.current.last_check
     s = MonitorService.current.last_check.status_success
     if s then 'up' else 'down'
+
+App.controller 'MonitorDownOrSlowCtrl', ($scope, $interval, MonitorService) ->
+
+  minuteInterval = $interval((() -> 
+    MonitorService.getLastFailed()
+  ), 60000)
+
+  $scope.$on "$destroy", ->
+    $interval.cancel(minuteInterval)
+
+  $scope.init = ->
+    MonitorService.getLastFailed()
+
+  $scope.checks = ->
+    MonitorService.lastFailed
+
+  $scope.done_processing_time = (check) ->
+    moment(check.done_processing_time).format('MM/DD/YYYY [at] h:mm a')
+
 
 App.controller 'MonitorResponseTimeChartCtrl', ($scope) ->
