@@ -98,8 +98,8 @@
               <tr ng-repeat='check in checks()'>
                 <td>
                   <label class='badge badge-danger' ng-if='check.status_success == false'>down</label>
-                  <label class='badge badge-danger' ng-if='check.status_success == true'>slow</label>
-                  &nbsp;&nbsp;&nbsp;{{done_processing_time(check)}}
+                  <label class='badge badge-warning' ng-if='check.status_success == true'>slow</label>
+                  &nbsp;&nbsp;&nbsp;{{done_processing_time(check)}}sl
                 </td>
               </tr>
             </table>
