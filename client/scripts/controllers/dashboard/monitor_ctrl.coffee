@@ -70,13 +70,8 @@ App.controller 'MonitorStatsCtrl', ($scope, MonitorService, $interval) ->
 
     MonitorService.getStats(MonitorService.current.id, $scope.startDate, $scope.endDate)
 
-  $scope.site_status = ->
-    return 'unknown' if !MonitorService.current.last_check
-    s = MonitorService.current.last_check.status_success
-    if s then 'up' else 'down'
-
   $scope.stats = ->
-    MonitorService.currentStats
+    MonitorService.currentStats && MonitorService.current.last_check
 
   $scope.uptime = ->
     (parseFloat(MonitorService.currentStats.total_success_checks) / MonitorService.currentStats.total_checks * 100).toFixed(2)
@@ -107,3 +102,11 @@ App.controller 'MonitorCtrl', ($scope, MonitorService, $stateParams, $interval, 
 
   $scope.monitor = ->
     MonitorService.current
+
+  $scope.site_status = ->
+    return 'unknown' if !MonitorService.current.last_check
+    s = MonitorService.current.last_check.status_success
+    if s then 'up' else 'down'
+
+App.controller 'MonitorResponseTimeChartCtrl', ($scope) ->
+  

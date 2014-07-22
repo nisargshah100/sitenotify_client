@@ -3,11 +3,37 @@
     <div class='col-md-8'>
       <div class='panel panel-info'>
         <div class='panel-heading'>
-          <strong>{{monitor().name}}</strong>
+          <strong>Response Time</strong>
           <div style='float:right'>{{monitor().url}}</div>
         </div>
         <div class='panel-body'>
-          Boo
+
+          <script type="text/javascript">
+            $(function() {
+
+              var d1 = [];
+              for (var i = 0; i < 14; i += 0.5) {
+                d1.push([i, Math.sin(i)]);
+              }
+
+              var d2 = [[0, 3], [4, 8], [8, 5], [9, 13]];
+
+              // A null signifies separate line segments
+
+              var d3 = [[0, 12], [7, 12], null, [7, 2.5], [12, 2.5]];
+
+              $.plot("#placeholder", [ d1, d2, d3 ]);
+
+              // Add the Flot version string to the footer
+
+              $("#footer").prepend("Flot " + $.plot.version + " &ndash; ");
+            });
+
+          </script>
+
+          <div ng-controller='MonitorResponseTimeChartCtrl'>
+            <div id="placeholder" class="demo-placeholder" style='height: 300px;'></div>
+          </div>
         </div>
       </div>
     </div>
