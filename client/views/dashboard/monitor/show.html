@@ -90,6 +90,13 @@
         </ul>
 
         <div ng-controller='MonitorDownOrSlowCtrl' ng-init='init()'>
+
+          <ul class="list-group" ng-if='!checks()'>
+            <li class="list-group-item">
+              <img src='/images/loading.gif' style='width: 32px; height: 32px; display: inline; margin-right: 10px;'></img>
+              Loading Requests
+          </ul>
+
           <div class='panel panel-danger' ng-if='checks()'>
             <div class='panel-heading'>
               Failed / Slow Requests
