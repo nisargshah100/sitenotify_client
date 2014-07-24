@@ -14,6 +14,11 @@ App.controller 'GraphResponseTimeCtrl', ($scope, MonitorService) ->
   
   $scope.draw = ->
     $.plot($scope.canvas, [$scope.data], {
+      series: {
+        lines: { show: true },
+        points: { show: true }
+      },
+      grid: { hoverable: true, clickable: true },
       xaxis: {
         mode: "time",
         min: $scope.startDate.toDate().getTime(),
