@@ -10,8 +10,11 @@ App.controller 'GraphResponseTimeCtrl', ($scope, MonitorService, $interval) ->
   $scope.$on "$destroy", ->
     $interval.cancel(minuteInterval)
 
+  $scope.$watch 'rangeDiffMinutes', ->
+    $scope.init()
+
   $scope.setRanges = ->
-    $scope.startDate = moment().subtract($scope.rangeDiffMinutes, 'minutes')
+    $scope.startDate = moment().subtract(parseInt($scope.rangeDiffMinutes), 'minutes')
     $scope.endDate = moment()
 
   $scope.init = ->
