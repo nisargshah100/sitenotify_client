@@ -3,6 +3,13 @@ App.controller 'GraphResponseTimeCtrl', ($scope, MonitorService) ->
   $scope.canvas = '#response_time_graph_placeholder'
   $scope.rangeDiffMinutes = 30
 
+  minuteInterval = $interval((() -> 
+    $scope.init()
+  ), 60000)
+
+  $scope.$on "$destroy", ->
+    $interval.cancel(minuteInterval)
+
   $scope.setRanges = ->
     $scope.startDate = moment().subtract($scope.rangeDiffMinutes, 'minutes')
     $scope.endDate = moment()
