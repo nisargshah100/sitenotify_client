@@ -1,9 +1,14 @@
 App.controller 'GraphResponseTimeCtrl', ($scope, MonitorService) ->
   $scope.data = []
   $scope.canvas = '#response_time_graph_placeholder'
+  $scope.startDate = moment().subtract(30, 'minutes')
+  $scope.endDate = moment()
 
   $scope.init = ->
-    MonitorService.current.getList('stats/daily_checks').then (data) =>
+    MonitorService.current.getList('stats/daily_checks', {
+      start_date: $scope.startDate.toDate(),
+      end_date: $scope.endDate.toDate()
+    }).then (data) =>
       $scope.data = _.map(data, (x) -> [moment(x.done_processing_time).toDate().getTime(), x.response_time])
       $scope.draw()
   
@@ -18,8 +23,8 @@ App.controller 'GraphResponseTimeCtrl', ($scope, MonitorService) ->
       },
       xaxis: {
         mode: "time",
-        min: moment().subtract(1, 'day').toDate().getTime(),
-        max: moment().toDate().getTime(),
+        min: $scope.startDate.toDate().getTime(),
+        max: $scope.endDate.toDate().getTime(),
         timeformat: "%H:%M %p"
       }
     });
