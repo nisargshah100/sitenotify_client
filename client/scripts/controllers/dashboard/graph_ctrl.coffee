@@ -1,4 +1,4 @@
-App.controller 'GraphResponseTimeCtrl', ($scope, MonitorService) ->
+App.controller 'GraphResponseTimeCtrl', ($scope, MonitorService, $interval) ->
   $scope.data = []
   $scope.canvas = '#response_time_graph_placeholder'
   $scope.rangeDiffMinutes = 30
