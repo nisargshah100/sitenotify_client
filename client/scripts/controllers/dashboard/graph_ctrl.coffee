@@ -33,12 +33,16 @@ App.controller 'GraphResponseTimeCtrl', ($scope, MonitorService, $interval) ->
         lines: { show: true },
         points: { show: true }
       },
+      tooltip: true,
+      tooltipOpts: {
+        content: '%x, <b>%y ms</b>'
+      },
       grid: { hoverable: true, clickable: true },
       xaxis: {
         mode: "time",
+        label: "Foo",
         min: $scope.startDate.toDate().getTime(),
         max: $scope.endDate.toDate().getTime(),
         timeformat: "%H:%M"
       }
     });
-
