@@ -40,9 +40,9 @@ App.controller 'GraphResponseTimeCtrl', ($scope, MonitorService, $interval) ->
       grid: { hoverable: true, clickable: true },
       xaxis: {
         mode: "time",
-        label: "Foo",
         min: $scope.startDate.toDate().getTime(),
         max: $scope.endDate.toDate().getTime(),
-        timeformat: "%H:%M"
+        timeformat: "%H:%M",
+        timezone: "browser"
       }
     });
