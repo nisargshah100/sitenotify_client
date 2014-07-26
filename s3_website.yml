@@ -1,7 +1,7 @@
 s3_id: AKIAIZNWXE6AHOHWR3TA
 s3_secret: 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
-s3_bucket: sitenotifyclient
-cloudfront_distribution_id: E2U5LUHG35ZK3Y
+s3_bucket: sitenotify.net
+# cloudfront_distribution_id: E2U5LUHG35ZK3Y
 
 # Below are examples of all the available configurations.
 # See README for more detailed info on each of them.

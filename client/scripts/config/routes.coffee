@@ -92,7 +92,7 @@ App.config ($stateProvider, $urlRouterProvider) ->
   $stateProvider
     .state 'main', {
       url: ''
-      template: 'Welcome!'
+      template: 'Welcome!!'
     }
     .state 'main2', {
       url: '/'
