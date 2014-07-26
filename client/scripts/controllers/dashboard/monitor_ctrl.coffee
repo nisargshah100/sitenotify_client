@@ -131,7 +131,7 @@ App.controller 'MonitorDownOrSlowCtrl', ($scope, $interval, MonitorService) ->
     moment(check.done_processing_time).format('MM/DD/YYYY [at] h:mm a')
 
 
-App.controller 'MonitorCheckCtrl', ($scope, MonitorService, $stateParams) ->
+App.controller 'MonitorCheckCtrl', ($scope, MonitorService, $stateParams, $sce, DevProdService) ->
   $scope.check = null
 
   $scope.init = ->
@@ -149,4 +149,7 @@ App.controller 'MonitorCheckCtrl', ($scope, MonitorService, $stateParams) ->
 
   $scope.traceroute = ->
     $scope.check.traceroute.replace(/\n/g, '<br />')
+
+  $scope.har = ->
+    $sce.trustAsResourceUrl("http://server.#{DevProdService.host()}/chrome_har/?url=#{$scope.check.har_url}")
 
