@@ -11,8 +11,8 @@ App.service 'UserService', (Restangular, $cookies) ->
     if @currentUser
       Restangular.all('sessions').remove().then ->
         @currentUser = null
-        $cookies.token = null
-        Restangular.setDefaultRequestParams({ token: null })
+        $cookies.token = ""
+        Restangular.setDefaultRequestParams({ token: "" })
 
   @setToken = (token) ->
     $cookies.token = token
