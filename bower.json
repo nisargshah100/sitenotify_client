@@ -38,7 +38,8 @@
     "angular-moment": "0.7.1",
     "moment-timezone": "0.1.0",
     "highcharts": "4.0.3",
-    "flot.tooltip": "0.7.1"
+    "flot.tooltip": "0.7.1",
+    "git@github.com:ericduran/chromeHAR.git": "0.0.0"
   },
   "devDependencies": {
     "twbs-bootstrap-sass": "~3.1.1",

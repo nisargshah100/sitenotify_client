@@ -1,0 +1,51 @@
+<div ng-controller='MonitorCheckCtrl' ng-init='init()'>
+
+  <a ui-sref='dashboard.monitor.show({id: check.site_monitor_id})'>&lt;-- Back to Monitor</a>
+  <hr /> 
+
+  <div class='panel panel-info'>
+    <div class='panel-heading'>
+      <strong>{{monitor().name}}</strong>
+      <div style='float:right'>{{monitor().url}}</div>
+    </div>
+    <div class='panel-body' ng-if='!check'>
+      <img src='/images/loading.gif' style='width: 32px; height: 32px; display: inline; margin-right: 10px;'></img>
+      Loading Details
+    </div>
+    <table class='table' ng-if='check'>
+      <tbody>
+        <tr>
+          <th>When</th>
+          <td>{{done_processing_time()}}</td>
+        </tr>
+        <tr>
+          <th>Status</th>
+          <td>
+            <label class='badge badge-warning' ng-if='check.slow'>Slow</label>
+            <label class='badge badge-danger' ng-if='!check.status_success'>Down</label>
+          </td>
+        </tr>
+        <tr>
+          <th>Status Code</th>
+          <td>{{check.status_code}}</td>
+        </tr>
+        <tr>
+          <th>Response Time</th>
+          <td>{{check.response_time}} ms</td>
+        </tr>
+        <tr>
+          <th>Content Size</th>
+          <td>{{check.content_size}} bytes</td>
+        </tr>
+        <tr ng-if='check.ping'>
+          <th>Ping</th>
+          <td ng-bind-html='ping()'></td>
+        </tr>
+        <tr ng-if='check.traceroute'>
+          <th>Traceroute</th>
+          <td ng-bind-html='traceroute()'></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

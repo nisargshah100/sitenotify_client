@@ -7,3 +7,11 @@
 .monitor-widget:hover {
   border-color: #ccc;
 }
+
+.selected-check {
+  cursor: pointer;
+}
+
+.selected-check:hover {
+  background-color: #eee;
+}

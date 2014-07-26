@@ -89,6 +89,9 @@ App.controller 'MonitorCtrl', ($scope, MonitorService, $stateParams, $interval, 
     MonitorService.refresh =>
       MonitorService.setCurrent(parseInt($stateParams.id))
 
+  $scope.goToCheck = (check) ->
+    $state.transitionTo('dashboard.monitor.check', { monitor_id: $stateParams.id, id: check.id })
+
   $scope.deleteMonitor = ->
     if confirm('When a monitor is deleted, we delete all its data. We cannot recover once you delete the monitor!')
       MonitorService.current.remove().then(
@@ -128,4 +131,22 @@ App.controller 'MonitorDownOrSlowCtrl', ($scope, $interval, MonitorService) ->
     moment(check.done_processing_time).format('MM/DD/YYYY [at] h:mm a')
 
 
-App.controller 'MonitorResponseTimeChartCtrl', ($scope) ->
+App.controller 'MonitorCheckCtrl', ($scope, MonitorService, $stateParams) ->
+  $scope.check = null
+
+  $scope.init = ->
+    MonitorService.current.one('site_checks', $stateParams.id).get().then (data) =>
+      $scope.check = data
+
+  $scope.monitor = ->
+    MonitorService.current
+
+  $scope.done_processing_time = ->
+    moment($scope.check.done_processing_time).format('MM/DD/YYYY [at] h:mm a')
+
+  $scope.ping = ->
+    $scope.check.ping.replace(/\n/g, '<br />')
+
+  $scope.traceroute = ->
+    $scope.check.traceroute.replace(/\n/g, '<br />')
+
