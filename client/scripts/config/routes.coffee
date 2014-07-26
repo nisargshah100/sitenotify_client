@@ -25,6 +25,8 @@ App.config ($stateProvider, $urlRouterProvider) ->
     .state 'dashboard', {
       templateUrl: 'views/layouts/dashboard.html'
       resolve: {
+        cookie: (UserService) ->
+          UserService.initToken()
         currentUser: (UserService) ->
           UserService.currentUser || UserService.refresh()
         accounts: (currentUser, AccountService) ->

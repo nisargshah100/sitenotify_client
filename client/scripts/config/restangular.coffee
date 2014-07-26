@@ -1,9 +1,6 @@
 App.run (Restangular, $state, DevProdService) ->
-  if DevProdService.isDev()
-    Restangular.setBaseUrl("http://server.#{DevProdService.host()}/api")
-  else
-    Restangular.setBaseUrl("http://server.sitenotify.net/api")
-
+  Restangular.setBaseUrl("http://server.#{DevProdService.host()}/api")
+  
   Restangular.setErrorInterceptor (response, deferred, responseHandler) ->
     if response.status not in [422, 401, 404]
       alert 'Unable to process this request'
