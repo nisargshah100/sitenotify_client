@@ -1,1 +1,13 @@
-<h3>Alerts</h3>
+ <div ng-controller='AlertCtrl'>
+  <div class='panel panel-info'>
+    <div class='panel-heading' ng-if='monitor()'>
+      Alerts for <strong>{{monitor().name}}</strong>
+    </div>
+    <div class='panel-heading' ng-if='!monitor()'>
+      <strong>Alerts</strong>
+    </div>
+    <div class='panel-body'>
+      There are no alerts. Add One!
+    </div>
+  </div>
+</div>

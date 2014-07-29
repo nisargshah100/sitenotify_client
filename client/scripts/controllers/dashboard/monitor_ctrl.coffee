@@ -43,9 +43,9 @@ App.controller 'MonitorEditCtrl', ($scope, UserService, AccountService, ErrorSer
     )
 
 App.controller 'MonitorStatsCtrl', ($scope, MonitorService, $interval) ->
-  $scope.monitor.range = 'forever'
-  $scope.startDate = moment().startOf('day')
-  $scope.endDate = moment().endOf('day')
+  $scope.monitor.range = 'monthly'
+  $scope.startDate = moment().startOf('month')
+  $scope.endDate = moment().endOf('month')
 
   $scope.$watch 'monitor.range', -> $scope.setRange()
 
@@ -65,8 +65,8 @@ App.controller 'MonitorStatsCtrl', ($scope, MonitorService, $interval) ->
       $scope.startDate = moment().startOf('week')
       $scope.endDate = moment().endOf('week')
     else
-      $scope.startDate = null
-      $scope.endDate = null
+      $scope.startDate = moment().startOf('month')
+      $scope.endDate = moment().endOf('month')
 
     MonitorService.getStats(MonitorService.current.id, $scope.startDate, $scope.endDate)
 
@@ -76,7 +76,7 @@ App.controller 'MonitorStatsCtrl', ($scope, MonitorService, $interval) ->
   $scope.uptime = ->
     (parseFloat(MonitorService.currentStats.total_success_checks) / MonitorService.currentStats.total_checks * 100).toFixed(2)
 
-App.controller 'MonitorCtrl', ($scope, MonitorService, $stateParams, $interval, $state, LoggerService) ->
+App.controller 'MonitorCtrl', ($scope, MonitorService, $stateParams, $interval, $state, LoggerService, AccountService) ->
 
   minuteInterval = $interval((() -> 
     MonitorService.refresh => MonitorService.setCurrent(parseInt($stateParams.id))
@@ -88,6 +88,9 @@ App.controller 'MonitorCtrl', ($scope, MonitorService, $stateParams, $interval, 
   $scope.$on 'new_account', (event) =>
     MonitorService.refresh =>
       MonitorService.setCurrent(parseInt($stateParams.id))
+
+  $scope.account = ->
+    AccountService.current
 
   $scope.goToCheck = (check) ->
     $state.transitionTo('dashboard.monitor.check', { monitor_id: $stateParams.id, id: check.id })

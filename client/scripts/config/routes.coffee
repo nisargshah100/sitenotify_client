@@ -64,9 +64,10 @@ App.config ($stateProvider, $urlRouterProvider) ->
     .state 'dashboard.monitor.show', {
       url: '/dashboard/monitors/:id'
       templateUrl: 'views/dashboard/monitor/show.html'
-      onEnter: (MonitorService, $stateParams) ->
+      onEnter: (MonitorService, $stateParams, $state) ->
         MonitorService.currentStats = null
         MonitorService.setCurrent(parseInt($stateParams.id))
+        $state.transitionTo('dashboard.home') if not MonitorService.current?
     }
 
     .state 'dashboard.monitor.check', {
@@ -82,8 +83,10 @@ App.config ($stateProvider, $urlRouterProvider) ->
     }
 
     .state 'dashboard.alerts.index', {
-      url: '/dashboard/alerts',
+      url: '/dashboard/alerts/:monitor_id',
       templateUrl: 'views/dashboard/alerts/index.html'
+      onEnter: ($stateParams, MonitorService) ->
+        MonitorService.setCurrent(parseInt($stateParams.monitor_id))
     }
 
     .state 'dashboard.plan', {

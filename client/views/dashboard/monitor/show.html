@@ -1,4 +1,8 @@
 <div ng-controller='MonitorCtrl'>
+  <div class='callout callout-warning' ng-if='!monitor().last_check'>
+    We are monitoring this site now. Go ahead <a ui-sref='dashboard.alerts.index({monitor_id: monitor().id})'><b>Setup Alerts</b></a> for this site.
+  </div>
+
   <div class='row'>
     <div class='col-md-8'>
       <div class='panel panel-info'>
@@ -7,6 +11,8 @@
           <div style='float:right'>{{monitor().url}}</div>
         </div>
         <div class='panel-body'>
+
+          <a ui-sref='dashboard.alerts.index({monitor_id: monitor().id})' class='btn btn-info pull-right'>Modify Alerts</a>
 
           <tabset class="ui-tab">
             <tab heading="Response Time">
@@ -36,7 +42,7 @@
           <img src='/images/dash.png' style='width: 30px; height: 30px; display: inline; margin-right: 10px;' ng-if='site_status() == "unknown"'></img>
           Site is {{site_status()}}
         </li>
-        <li class="list-group-item" style='text-align:right'>
+        <li class="list-group-item" style='text-align:right' ng-if='account().admin'>
           <a ui-sref='dashboard.monitor.edit({id: monitor().id})' class='btn btn-line-primary btn-sm'>Edit Monitor</a>
           <button class='btn btn-line-danger btn-sm' ng-click='deleteMonitor()'>Delete Monitor</button>
         </li>
@@ -54,7 +60,7 @@
           <div class="btn-group">
             <label class="btn btn-default" ng-model="monitor.range" btn-radio="'daily'">Daily</label>
             <label class="btn btn-default" ng-model="monitor.range" btn-radio="'weekly'">Weekly</label>
-            <label class="btn btn-default" ng-model="monitor.range" btn-radio="'forever'">Forever</label>
+            <label class="btn btn-default" ng-model="monitor.range" btn-radio="'monthly'">Monthly</label>
           </div>
 
           <li class="list-group-item" ng-if='stats().total_success_checks'>
