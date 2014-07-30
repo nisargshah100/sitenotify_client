@@ -1,5 +1,7 @@
 App.service 'UserService', (Restangular, $cookies) ->
   @currentUser = null
+  @beforeLoginPath = null
+
   @setUser = (@currentUser) ->
     @setToken(@currentUser.token)
 
@@ -18,9 +20,16 @@ App.service 'UserService', (Restangular, $cookies) ->
     $cookies.token = token
     @initToken()
 
+  @getAndResetLoginPath = ->
+    old = @beforeLoginPath
+    @beforeLoginPath = null
+    old
+
   @initToken = ->
     if $cookies.token
       Restangular.setDefaultRequestParams({ token: $cookies.token })
+    else
+      @beforeLoginPath = location.href
 
 
   @

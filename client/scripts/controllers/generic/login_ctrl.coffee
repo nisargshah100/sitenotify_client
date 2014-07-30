@@ -9,7 +9,11 @@ App.controller 'LoginCtrl', ($scope, Restangular, UserService, $state, $statePar
       (data) ->
         UserService.setUser(data)
         $cookies.currentAccountId = $scope.accountId
-        $state.go('dashboard.home')
+        loginPath = UserService.getAndResetLoginPath()
+        if loginPath
+          location.href = loginPath
+        else
+          $state.go('dashboard.home')
       (response) ->
         msg = response.data.error
         msg ||= 'Invalid email or password'
