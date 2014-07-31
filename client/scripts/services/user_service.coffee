@@ -20,6 +20,9 @@ App.service 'UserService', (Restangular, $cookies) ->
     $cookies.token = token
     @initToken()
 
+  @getToken = ->
+    @currentUser.token || $cookies.token
+
   @getAndResetLoginPath = ->
     old = @beforeLoginPath
     @beforeLoginPath = null

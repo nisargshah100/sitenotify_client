@@ -47,6 +47,7 @@
                       <select class="ng-pristine ng-valid" ng-model='selected.card_id' style='width:100%;'>
                           <option ng-repeat='card in cards()' value="{{card.id}}" ng-selected='selected.card_id == card.id'>
                             {{card.card_holder_name}}&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;{{card.last_four}}&nbsp;&nbsp;&nbsp;({{card.exp_month}}/{{card.exp_year}})
+                            <span ng-if='card.last_failed'>&nbsp;&nbsp;&nbsp;--&nbsp;&nbsp;&nbsp;FAILED CHARGE
                           </option>
                       </select>
                     </span>

@@ -1,13 +1,18 @@
 App.controller 'DashboardCtrl', ($scope, AccountService, UserService, MonitorService, $timeout, $state, $interval) ->
   $scope.flash = {}
+  $scope.flashTimeout = null
   $scope.monitorsFilter = {}
-  
-  $scope.$on 'dashboardFlashEvent', (event, type, msg, delay) ->
-    delay ||= 5000
-    $scope.flash.type = type
-    $scope.flash.msg = msg
 
-    $timeout((() -> $scope.flash = {}), delay)
+  $scope.$on 'dashboardFlashEvent', (event, type, msg, delay) ->
+    $timeout.cancel($scope.flashTimeout)
+    $scope.flash = {}
+    delay ||= 5000
+
+    $scope.$apply ->
+      $scope.flash.type = type
+      $scope.flash.msg = msg
+
+    $scope.flashTimeout = $timeout((() -> $scope.flash = {}), delay)
 
   $scope.$on 'new_account', =>
     MonitorService.refresh()
