@@ -1,4 +1,4 @@
-App.service 'PubsubService', ($injector, $rootScope) ->
+App.service 'PubsubService', ($injector) ->
 
   @setup = (acc) ->
     pubnub = PUBNUB.init(

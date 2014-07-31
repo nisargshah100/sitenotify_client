@@ -4,6 +4,9 @@ App.controller 'PlansCtrl', ($scope, PlanService, AccountService, DevProdService
   $scope.months = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12']
   $scope.selected.addNewCardView = true
 
+  $scope.$watch 'selected.card_id', ->
+    $scope.selected.card = _.find($scope.cards(), (x) -> x.id == parseInt($scope.selected.card_id))
+
   $scope.stripeKey = ->
     if DevProdService.isDev()
       'pk_test_4Lo5tMNXpP3Q2See7xLjhfww'
