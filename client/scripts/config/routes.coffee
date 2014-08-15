@@ -16,6 +16,16 @@ App.config ($stateProvider, $urlRouterProvider) ->
       templateUrl: 'views/generic/signup.html'
     }
 
+    .state 'special.forgot_password', {
+      url: '/forgot_password?inviteCode&accountId',
+      templateUrl: 'views/generic/forgot_password.html'
+    }
+
+    .state 'special.forgot_password_change', {
+      url: '/forgot_password_change?code&id',
+      templateUrl: 'views/generic/forgot_password_change.html'
+    }
+
     .state 'not_found', {
       url: '/not_found'
       templateUrl: 'views/generic/not_found.html'
