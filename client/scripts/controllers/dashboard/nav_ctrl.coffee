@@ -1,8 +1,10 @@
 App.controller 'NavCtrl', ($scope, $rootScope, UserService, $state, AccountService) ->
-  $scope.user = UserService.currentUser
   
   $scope.account = ->
     AccountService.current
+
+  $scope.user = ->
+    UserService.currentUser
 
   $scope.logout = (e) ->
     e.preventDefault()

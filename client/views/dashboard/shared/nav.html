@@ -36,12 +36,18 @@
 
       <li class="dropdown text-normal nav-profile">
         <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown">
-          <img gravatar-src-once="user.email" gravatar-size="30" alt="" class="img-circle img30_30" style='margin-right: 10px;'>
+          <img gravatar-src-once="user().email" gravatar-size="30" alt="" class="img-circle img30_30" style='margin-right: 10px;'>
           <span class="hidden-xs">
-            <span data-i18n="Lisa Doe">{{user.email}}</span>
+            <span>{{user().name}}</span>
           </span>
         </a>
         <ul class="dropdown-menu with-arrow pull-right">
+          <li>
+            <a ui-sref='dashboard.profile'>
+              <i class="fa fa-user"></i>
+              <span>Profile</span>
+            </a>
+          </li>
           <li>
             <a href='#' ng-click='logout($event)'>
               <i class="fa fa-sign-out"></i>
