@@ -5,9 +5,10 @@ App.service 'UserService', (Restangular, $cookies) ->
   @setUser = (@currentUser) ->
     @setToken(@currentUser.token)
 
-  @refresh = ->
+  @refresh = (cb) ->
     Restangular.all('users').customGET('details').then (data) =>
       @currentUser = data
+      cb() if cb?
   
   @logout = ->
     if @currentUser
