@@ -39,7 +39,8 @@
     "moment-timezone": "0.1.0",
     "highcharts": "4.0.3",
     "flot.tooltip": "0.7.1",
-    "git@github.com:ericduran/chromeHAR.git": "0.0.0"
+    "nouislider": "6.2.0",
+    "angular-nouislider": "0.3.1"
   },
   "devDependencies": {
     "twbs-bootstrap-sass": "~3.1.1",

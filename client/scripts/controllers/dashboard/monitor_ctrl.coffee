@@ -1,5 +1,5 @@
 App.controller 'MonitorNewCtrl', ($scope, UserService, AccountService, ErrorService, MonitorService, $state) ->
-  $scope.monitor = { interval: 10, url: 'http://' }
+  $scope.monitor = { interval: 10, url: 'http://', slow_speed: 4000 }
   $scope.intervalOptions = [
     { value: 1, text: 'minute' }
     { value: 2, text: '2 minutes'}

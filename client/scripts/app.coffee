@@ -8,5 +8,6 @@
   'restangular',
   'ui.gravatar',
   'ngCookies',
-  'angularMoment'
+  'angularMoment',
+  'nouislider'
 ])

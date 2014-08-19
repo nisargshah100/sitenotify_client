@@ -97,6 +97,13 @@ App.config ($stateProvider, $urlRouterProvider) ->
       templateUrl: 'views/dashboard/settings.html'
     }
 
+    .state 'dashboard.alerts.new', {
+      url: '/dashboard/alerts/:monitor_id/new',
+      templateUrl: 'views/dashboard/alerts/new.html'
+      onEnter: ($stateParams, MonitorService) ->
+        MonitorService.setCurrent(parseInt($stateParams.monitor_id))
+    }
+
     .state 'dashboard.alerts.index', {
       url: '/dashboard/alerts/:monitor_id',
       templateUrl: 'views/dashboard/alerts/index.html'
