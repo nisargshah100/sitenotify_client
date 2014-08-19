@@ -10,6 +10,7 @@ App.controller 'LoginCtrl', ($scope, Restangular, UserService, $state, $statePar
     Restangular.all('sessions').post(user).then(
       (data) ->
         UserService.setUser(data)
+        UserService.refresh()
         $cookies.currentAccountId = $scope.accountId
         loginPath = UserService.getAndResetLoginPath()
         if loginPath

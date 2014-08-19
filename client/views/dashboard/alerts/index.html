@@ -1,6 +1,6 @@
  <div ng-controller='AlertCtrl'>
 
-  <div style='align:right; text-align:right; margin-bottom: 10px;'>
+  <div style='align:right; text-align:right; margin-bottom: 10px;' ng-if='monitor().id'>
     <a ui-sref='dashboard.alerts.new({monitor_id:monitor().id})' class='btn btn-info'>New Alert</a>
   </div>
 
@@ -12,7 +12,7 @@
       <strong>Alerts</strong>
     </div>
     <div class='panel-body'>
-      There are no alerts. <a ui-sref='dashboard.alerts.new({monitor_id:monitor().id})'>Add One!</a>
+      There are no alerts. <a ui-sref='dashboard.alerts.new({monitor_id:monitor().id})' ng-if='monitor().id'>Add One!</a><span ng-if='!monitor().id'>Go to a monitor to add alerts</span>
     </div>
   </div>
 </div>
