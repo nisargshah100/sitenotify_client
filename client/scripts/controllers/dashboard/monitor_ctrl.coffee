@@ -33,7 +33,7 @@ App.controller 'MonitorEditCtrl', ($scope, UserService, AccountService, ErrorSer
   ]
 
   $scope.saveMonitor = ->
-    $scope.monitor.put($scope.monitor.plain()).then(
+    $scope.monitor.put($scope.monitor).then(
       (data) ->
         MonitorService.refresh =>
           $state.transitionTo('dashboard.monitor.show', { id: $scope.monitor.id })
