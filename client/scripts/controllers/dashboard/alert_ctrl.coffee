@@ -32,8 +32,10 @@ App.controller 'AlertFormCtrl', ($scope, MonitorService, ErrorService, $state, L
   $scope.loading = false
   $scope.downThreshold = 1
   $scope.slowThreshold = 2
+  $scope.thresholds = { down: 1, slow: 2 }
   $scope.loadingAlert = false
   $scope.savingAlert = false
+  $scope.selected = {} 
 
   $scope.init = ->
     $scope.loadAlert() if $stateParams.alert_id
@@ -47,8 +49,8 @@ App.controller 'AlertFormCtrl', ($scope, MonitorService, ErrorService, $state, L
           $scope.membersInAlert = data.users
           delete data.users
           $scope.alert = data
-          $scope.downThreshold = data.threshold_down
-          $scope.slowThreshold = data.threshold_slow
+          $scope.thresholds.down = data.threshold_down
+          $scope.thresholds.slow = data.threshold_slow
           $scope.loadingAlert = false
         (err) ->
           $state.transitionTo('dashboard.alerts.index', { monitor_id: $scope.monitor().id })
@@ -58,15 +60,15 @@ App.controller 'AlertFormCtrl', ($scope, MonitorService, ErrorService, $state, L
 
   $scope.members = (val) ->
     exclude_ids = _.map($scope.membersInAlert, (x) -> x.id)
-    MonitorService.current.customGET 'users', { q: val, exclude: exclude_ids}
+    MonitorService.current.customPOST { q: val, exclude: exclude_ids}, 'users'
 
   $scope.selectedMembers = ->
     $scope.membersInAlert
 
   $scope.save = (alert) ->
     alert ||= {}
-    alert.threshold_down = $scope.downThreshold
-    alert.threshold_slow = $scope.slowThreshold
+    alert.threshold_down = $scope.thresholds.down
+    alert.threshold_slow = $scope.thresholds.slow
     alert.users = $scope.membersInAlert
     $scope.savingAlert = true
 
@@ -94,7 +96,7 @@ App.controller 'AlertFormCtrl', ($scope, MonitorService, ErrorService, $state, L
 
   $scope.nameSelected = (item, model, label) ->
     if item && model && label
-      $scope.selectedName = null
+      $scope.selected.name = null
       $scope.membersInAlert.push(model)
 
   # for some reason autocomplete calls the first button when hitting enter on empty input
