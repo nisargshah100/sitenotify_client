@@ -32,6 +32,8 @@ App.controller 'AlertFormCtrl', ($scope, MonitorService, ErrorService, $state, L
   $scope.loading = false
   $scope.downThreshold = 1
   $scope.slowThreshold = 2
+  $scope.loadingAlert = false
+  $scope.savingAlert = false
 
   $scope.init = ->
     $scope.loadAlert() if $stateParams.alert_id
@@ -39,6 +41,7 @@ App.controller 'AlertFormCtrl', ($scope, MonitorService, ErrorService, $state, L
   $scope.loadAlert = ->
     id = parseInt($stateParams.alert_id)
     if id
+      $scope.loadingAlert = true
       MonitorService.current.customGET("site_alerts/#{id}").then(
         (data) ->
           $scope.membersInAlert = data.users
@@ -46,6 +49,11 @@ App.controller 'AlertFormCtrl', ($scope, MonitorService, ErrorService, $state, L
           $scope.alert = data
           $scope.downThreshold = data.threshold_down
           $scope.slowThreshold = data.threshold_slow
+          $scope.loadingAlert = false
+        (err) ->
+          $state.transitionTo('dashboard.alerts.index', { monitor_id: $scope.monitor().id })
+          LoggerService.error('Unable to load alert', 2000)
+          $scope.loadingAlert = false
       )
 
   $scope.members = (val) ->
@@ -60,6 +68,7 @@ App.controller 'AlertFormCtrl', ($scope, MonitorService, ErrorService, $state, L
     alert.threshold_down = $scope.downThreshold
     alert.threshold_slow = $scope.slowThreshold
     alert.users = $scope.membersInAlert
+    $scope.savingAlert = true
 
     if alert.id
       m = MonitorService.current.customPUT(alert, "site_alerts/#{alert.id}")
@@ -70,8 +79,10 @@ App.controller 'AlertFormCtrl', ($scope, MonitorService, ErrorService, $state, L
       (data) ->
         $state.transitionTo('dashboard.alerts.index', { monitor_id: $scope.monitor().id })
         LoggerService.success("Alert saved", 1000)
+        $scope.savingAlert = false
       (err) ->
         $scope.errors = ErrorService.fullMessages(err)
+        $scope.savingAlert = false
     )
 
   $scope.monitor = ->

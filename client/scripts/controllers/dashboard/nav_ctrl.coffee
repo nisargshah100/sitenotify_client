@@ -16,4 +16,5 @@ App.controller 'NavCtrl', ($scope, $rootScope, UserService, $state, AccountServi
 
   $scope.setNewAccount = (acc) ->
     AccountService.setCurrent(acc)
+    $state.transitionTo('dashboard.index')
     $rootScope.$broadcast('new_account', acc.id)
