@@ -1,12 +1,18 @@
-<section class="panel panel-default" ng-controller='AlertCtrl'>
+<section class="panel panel-default" ng-controller='AlertFormCtrl' ng-init='init()'>
   <div class="panel-heading"><span class="glyphicon glyphicon-th"></span> New Alert for <b>{{monitor().name}}</b></div>
     <div class="panel-body ng-scope">
 
-      <form class="form-horizontal ng-pristine ng-valid" ng-submit='add(alert)'>
+      <div class='alert alert-danger' ng-if='errors'>
+        <ul ng-repeat='error in errors'>
+          <li>{{error}}</li>
+        </ul>
+      </div>
+
+      <form class="form-horizontal ng-pristine ng-valid" ng-submit='save(alert)'>
         <div class="form-group">
           <label for="" class="form-lbl col-sm-2">Alert Name</label>
           <div class="col-sm-10">
-            <input type="text" class="form-control" ng-model='alert.name' placeholder='Website Down'>
+            <input type="text" class="form-control" ng-model='alert.name' placeholder='ex/ Notify SysOps - Website Down'>
           </div>
         </div>
         <div class="form-group">
@@ -52,19 +58,19 @@
             <input type="text" class="form-control" typeahead-on-select='nameSelected($item, $model, $label)' ng-model='selectedName' placeholder='Enter a name' typeahead="member as labelTypeAhead(member) for member in members($viewValue) | filter:{name:$viewValue}" typeahead-loading="loading" />
             <div style='margin-top: 5px;'>(call and text will be disabled if user has no phone number)</div>
 
-            <div style='float:right; margin-top: -50px; margin-right: 10px;' ng-show='!!loading'>loading members</div>
+            <div style='float:right; margin-top: -50px; margin-right: 10px;' ng-show='!!loading'>loading</div>
 
             <table class='table table-bordered' style='margin-top: 20px;'>
-              <tr ng-repeat='user in selectedMembers()'>
+              <tr ng-repeat='user in membersInAlert'>
                 <td>{{user.name}}</td>
                 <td style='width: 120px;'>
-                  <input type='checkbox' id='{{user.id}}_call' ng-disabled='!user.has_phone' ng-checked='user.should_call' />&nbsp;&nbsp;&nbsp;<label for='{{user.id}}_call'>call</label>
+                  <input type='checkbox' id='{{user.id}}_call' ng-disabled='!user.has_phone' ng-model='user.call' />&nbsp;&nbsp;&nbsp;<label for='{{user.id}}_call'>call</label>
                 </td>
                 <td style='width: 120px;'>
-                  <input type='checkbox' id='{{user.id}}_text' ng-disabled='!user.has_phone' ng-checked='user.should_text' />&nbsp;&nbsp;&nbsp;<label for='{{user.id}}_text'>text</label>
+                  <input type='checkbox' id='{{user.id}}_text' ng-disabled='!user.has_phone' ng-model='user.text' />&nbsp;&nbsp;&nbsp;<label for='{{user.id}}_text'>text</label>
                 </td>
                 <td style='width: 120px;'>
-                  <input type='checkbox' id='{{user.id}}_email' ng-disabled='!user.has_email' ng-checked='user.should_email' />&nbsp;&nbsp;&nbsp;<label for='{{user.id}}_email'>email</label>
+                  <input type='checkbox' id='{{user.id}}_email' ng-disabled='!user.has_email' ng-model='user.email' />&nbsp;&nbsp;&nbsp;<label for='{{user.id}}_email'>email</label>
                 </td>
                 <td style='width: 50px;'>
                   <button class='btn btn-danger hidden' ng-click='blah(user)'>X</button>

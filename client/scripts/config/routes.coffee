@@ -104,11 +104,19 @@ App.config ($stateProvider, $urlRouterProvider) ->
         MonitorService.setCurrent(parseInt($stateParams.monitor_id))
     }
 
+    .state 'dashboard.alerts.edit', {
+      url: '/dashboard/alerts/:monitor_id/edit/:alert_id',
+      templateUrl: 'views/dashboard/alerts/new.html'
+      onEnter: ($stateParams, MonitorService) ->
+        MonitorService.setCurrent(parseInt($stateParams.monitor_id))
+    }
+
     .state 'dashboard.alerts.index', {
       url: '/dashboard/alerts/:monitor_id',
       templateUrl: 'views/dashboard/alerts/index.html'
-      onEnter: ($stateParams, MonitorService) ->
+      onEnter: ($stateParams, MonitorService, $state) ->
         MonitorService.setCurrent(parseInt($stateParams.monitor_id))
+        $state.transitionTo('dashboard.home') if not MonitorService.current?
     }
 
     .state 'dashboard.plan', {

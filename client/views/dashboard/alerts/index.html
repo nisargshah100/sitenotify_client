@@ -1,18 +1,41 @@
- <div ng-controller='AlertCtrl'>
+ <div ng-controller='AlertCtrl' ng-init='init()'>
 
-  <div style='align:right; text-align:right; margin-bottom: 10px;' ng-if='monitor().id'>
+  <a ui-sref='dashboard.monitor.show({id:monitor().id})' style='float:left;'>&lt;-- Back to monitor</a>
+
+  <div style='align:right; text-align:right; margin-bottom: 10px;'>
     <a ui-sref='dashboard.alerts.new({monitor_id:monitor().id})' class='btn btn-info'>New Alert</a>
   </div>
 
   <div class='panel panel-info'>
-    <div class='panel-heading' ng-if='monitor()'>
+    <div class='panel-heading'>
       Alerts for <strong>{{monitor().name}}</strong>
     </div>
-    <div class='panel-heading' ng-if='!monitor()'>
-      <strong>Alerts</strong>
+    <div class='panel-body' ng-if='alerts == null || alerts.length == 0'>
+      <div ng-if='alerts == null'>
+        Loading...
+      </div>
+      <div ng-if='alerts.length == 0'>
+        There are no alerts. <a ui-sref='dashboard.alerts.new({monitor_id:monitor().id})'>Add One!</a>
+      </div>
     </div>
-    <div class='panel-body'>
-      There are no alerts. <a ui-sref='dashboard.alerts.new({monitor_id:monitor().id})' ng-if='monitor().id'>Add One!</a><span ng-if='!monitor().id'>Go to a monitor to add alerts</span>
-    </div>
+    <table class='table table-bordered' ng-if='alerts && alerts.length > 0'>
+      <tr>
+        <th>Name</th>
+        <th>Down Alert</th>
+        <th>Slow Alert</th>
+        <th>Created At</th>
+        <th></th>
+      </tr>
+      <tr ng-repeat='alert in alerts'>
+        <td>{{alert.name}}</td>
+        <td style='width: 100px;'>{{boolToYesNo(alert.down)}}</td>
+        <td style='width: 100px;'>{{boolToYesNo(alert.slow)}}</td>
+        <td style='width: 200px'>{{alert.created_at | formattedDateTime}}</td>
+        <td style='width: 150px'>
+          <button class='btn btn-info btn-sm' ng-click='edit(alert)'>Edit</button>
+          <button class='btn btn-danger btn-sm' ng-click='delete(alert)'>Delete</button>
+        </td>
+      </tr>
+    </table>
   </div>
 </div>

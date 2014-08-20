@@ -1,6 +1,6 @@
 <div ng-controller='MonitorCtrl'>
   <div class='callout callout-warning' ng-if='!monitor().last_check'>
-    We are monitoring this site now. Go ahead <a ui-sref='dashboard.alerts.index({monitor_id: monitor().id})'><b>Setup Alerts</b></a> for this site.
+    We are monitoring this site now. Go ahead <a ui-sref='dashboard.alerts.new({monitor_id: monitor().id})'><b>Add an alert</b></a> for this site.
   </div>
 
   <div class='callout callout-danger' ng-if='monitor().disabled'>
