@@ -7,6 +7,10 @@
     <b>This monitor has been disabled. {{monitor().disabled_reason}}!</b>
   </div>
 
+  <div class='callout callout-warning' ng-if='monitor().paused'>
+    <b>This monitor has been paused! You can enable via options below.</b>
+  </div>
+
   <div class='row'>
     <div class='col-md-8'>
       <div class='panel panel-info'>
@@ -38,7 +42,6 @@
       </div>
     </div>
     <div class='col-md-4'>
-
       <ul class="list-group">
         <li class="list-group-item">
           <img src='/images/check.png' style='width: 30px; height: 30px; display: inline; margin-right: 10px;' ng-if='site_status() == "up"'></img>
@@ -46,9 +49,17 @@
           <img src='/images/dash.png' style='width: 30px; height: 30px; display: inline; margin-right: 10px;' ng-if='site_status() == "unknown"'></img>
           Site is {{site_status()}}
         </li>
-        <li class="list-group-item" style='text-align:right' ng-if='account().admin'>
-          <a ui-sref='dashboard.monitor.edit({id: monitor().id})' class='btn btn-line-primary btn-sm'>Edit Monitor</a>
-          <button class='btn btn-line-danger btn-sm' ng-click='deleteMonitor()'>Delete Monitor</button>
+        <li class="list-group-item" ng-if='account().admin'>
+          
+          <div class="btn-group">
+            <button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown"> Options&nbsp;&nbsp;<span class="caret"></span> </button>
+            <ul class="dropdown-menu" role="menu">
+                <li><a ui-sref='dashboard.monitor.edit({id: monitor().id})'>Edit Monitor</a></li>
+                <li><a href='javascript:;' ng-click='pauseMonitor()' ng-if='!monitor().paused'>Pause Monitor</a></li>
+                <li><a href='javascript:;' ng-click='pauseMonitor()' ng-if='monitor().paused'>Resume Monitor</a></li>
+                <li><a href="javascript:;" ng-click='deleteMonitor()'>Delete Monitor</a></li>
+            </ul>
+          </div>
         </li>
       </ul>
 

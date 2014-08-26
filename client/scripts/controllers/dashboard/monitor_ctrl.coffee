@@ -106,6 +106,17 @@ App.controller 'MonitorCtrl', ($scope, MonitorService, $stateParams, $interval, 
           LoggerService.error('We were unable to remove this monitor')
       )
 
+  $scope.pauseMonitor = ->
+    MonitorService.current.customPOST({}, 'toggle_paused').then(
+      (data) ->
+        MonitorService.refresh ->
+          LoggerService.success('The monitor has been paused') if !MonitorService.current.paused
+          LoggerService.success('The monitor has been resumed') if MonitorService.current.paused
+          MonitorService.setCurrent(MonitorService.current.id)
+      (err) ->
+        LoggerService.error('We were unable to pause this monitor')
+    )
+
   $scope.monitor = ->
     MonitorService.current
 
