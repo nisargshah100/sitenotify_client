@@ -45,7 +45,7 @@
               <div slider ng-model="thresholds.down" step=1 start=1 end=10></div>
             </div>
             <div ng-show='alert.slow' ng-class="{ 'alert-top-margin': alert.down == true }">
-              Notify website <span style='color: #E9AB17; font-weight: bold'>slow</span> after <b>{{thresholds.slow}} <span ng-pluralize count='thresholds.slow' when="{'1': 'check', 'other': 'checks'}" /></b>.
+              Notify website <span style='color: #E9AB17; font-weight: bold'>slow</span> after <b>{{thresholds.slow}} <span ng-pluralize count='thresholds.slow' when="{'1': 'check', 'other': 'checks'}" /></b>. (setting this too low can cause false alerts - 3 is optimal)
               <br /><br />
               <div slider ng-model="thresholds.slow" step=1 start=1 end=10></div>
             </div>

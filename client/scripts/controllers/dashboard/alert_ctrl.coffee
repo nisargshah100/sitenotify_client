@@ -23,22 +23,21 @@ App.controller 'AlertCtrl', ($scope, MonitorService, $state, LoggerService) ->
     if confirm("Are you sure you want to remove this alert?")
       alert.remove().then (data) -> 
         $scope.refresh()
+        MonitorService.refresh()
         LoggerService.success("Removed #{alert.name}", 1000)
 
 
-App.controller 'AlertFormCtrl', ($scope, MonitorService, ErrorService, $state, LoggerService, $stateParams) ->
+App.controller 'AlertFormCtrl', ($scope, MonitorService, ErrorService, $state, UserService, LoggerService, $stateParams) ->
   $scope.alert = {}
   $scope.membersInAlert = []
   $scope.loading = false
-  $scope.downThreshold = 1
-  $scope.slowThreshold = 2
-  $scope.thresholds = { down: 1, slow: 2 }
+  $scope.thresholds = { down: 1, slow: 3 }
   $scope.loadingAlert = false
   $scope.savingAlert = false
   $scope.selected = {} 
 
   $scope.init = ->
-    $scope.loadAlert() if $stateParams.alert_id
+    $scope.loadAlert()
 
   $scope.loadAlert = ->
     id = parseInt($stateParams.alert_id)
@@ -57,6 +56,13 @@ App.controller 'AlertFormCtrl', ($scope, MonitorService, ErrorService, $state, L
           LoggerService.error('Unable to load alert', 2000)
           $scope.loadingAlert = false
       )
+    else
+      $scope.membersInAlert.push({ 
+        id: UserService.currentUser.id
+        name: UserService.currentUser.name
+        has_phone: UserService.currentUser.phone?
+        has_email: true
+      })
 
   $scope.members = (val) ->
     exclude_ids = _.map($scope.membersInAlert, (x) -> x.id)
@@ -80,6 +86,7 @@ App.controller 'AlertFormCtrl', ($scope, MonitorService, ErrorService, $state, L
     m.then(
       (data) ->
         $state.transitionTo('dashboard.alerts.index', { monitor_id: $scope.monitor().id })
+        MonitorService.refresh()
         LoggerService.success("Alert saved", 1000)
         $scope.savingAlert = false
       (err) ->

@@ -16,7 +16,7 @@
         </div>
         <div class='panel-body'>
 
-          <a ui-sref='dashboard.alerts.index({monitor_id: monitor().id})' class='btn btn-info pull-right'>Modify Alerts</a>
+          <a ui-sref='dashboard.alerts.index({monitor_id: monitor().id})' class='btn btn-info pull-right'>Modify Alerts ({{monitor().alerts_count}})</a>
 
           <tabset class="ui-tab">
             <tab heading="Response Time">
