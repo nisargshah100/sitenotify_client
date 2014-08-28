@@ -125,10 +125,13 @@ App.controller 'MonitorCtrl', ($scope, MonitorService, $stateParams, $interval, 
     s = MonitorService.current.last_check.status_success
     if s then 'up' else 'down'
 
-App.controller 'MonitorDownOrSlowCtrl', ($scope, $interval, MonitorService) ->
+App.controller 'MonitorDownSlowORNotifcationCtrl', ($scope, $interval, MonitorService) ->
+
+  $scope.monitor = { latestDisplay: 'requests' }
 
   minuteInterval = $interval((() -> 
     MonitorService.getLastFailed()
+    MonitorService.getNotifications()
   ), 60000)
 
   $scope.$on "$destroy", ->
@@ -137,9 +140,13 @@ App.controller 'MonitorDownOrSlowCtrl', ($scope, $interval, MonitorService) ->
   $scope.init = ->
     MonitorService.lastFailed = null
     MonitorService.getLastFailed()
+    MonitorService.getNotifications()
 
   $scope.checks = ->
     MonitorService.lastFailed
+
+  $scope.notifications = ->
+    MonitorService.notifications
 
   $scope.done_processing_time = (check) ->
     moment(check.done_processing_time).format('MM/DD/YYYY [at] h:mm a')

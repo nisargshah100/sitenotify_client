@@ -100,19 +100,21 @@
           </li>
         </ul>
 
-        <div ng-controller='MonitorDownOrSlowCtrl' ng-init='init()'>
+        <div ng-controller='MonitorDownSlowORNotifcationCtrl' ng-init='init()'>
 
-          <ul class="list-group" ng-if='!checks()'>
-            <li class="list-group-item">
-              <img src='/images/loading.gif' style='width: 32px; height: 32px; display: inline; margin-right: 10px;'></img>
-              Loading Requests
-          </ul>
+          <div class="btn-group">
+            <label class="btn btn-default btn-sm" ng-model="monitor.latestDisplay" btn-radio="'requests'">Failed / Slow Requests</label>
+            <label class="btn btn-default btn-sm" ng-model="monitor.latestDisplay" btn-radio="'notifications'">Notifications</label>
+          </div>
 
-          <div class='panel panel-danger' ng-if='checks()'>
-            <div class='panel-heading'>
-              Failed / Slow Requests
-            </div>
-            <table class='table'>
+          <div class='panel panel-danger' ng-if='monitor.latestDisplay == "requests"'>
+            <ul class="list-group" ng-if='!checks()'>
+              <li class="list-group-item">
+                <img src='/images/loading.gif' style='width: 32px; height: 32px; display: inline; margin-right: 10px;'></img>
+                Loading...
+            </ul>
+
+            <table class='table' ng-if='checks()'>
               <tr ng-repeat='check in checks()'>
                 <td class='selected-check' ng-click='goToCheck(check)'>
                   <label class='badge badge-danger' ng-if='check.status_success == false'>down</label>
@@ -122,6 +124,28 @@
               </tr>
             </table>
           </div>
+
+          <div class='panel panel-danger' ng-if='monitor.latestDisplay == "notifications"'>
+            <table class='table' ng-if='notifications()'>
+              <tr ng-repeat='n in notifications()'>
+                <td>
+                  <div style='width: 90px; float:left;'>
+                    <img src='/images/check.png' style='width: 24px; height: 24px; display: inline; margin-right: 10px;' ng-if='n.success'></img>
+                    <img src='/images/error.png' style='width: 24px; height: 24px; display: inline; margin-right: 10px;' ng-if='!n.success'></img>
+
+                    <label class='badge badge-danger' ng-if='n.down'>down</label>
+                    <label class='badge badge-warning' ng-if='n.slow'>slow</label>
+                    <label class='badge badge-success' ng-if='n.normal'>normal</label>
+                  </div>
+                  <div style='float:right; text-align:right'>
+                    <span style='font-size: 13px;'>&nbsp;&nbsp;<b>{{n.name}}</b> via <b>{{n.notify_type}}</b></span>
+                    <div style='text-align:right; color: #666; font-size: 12px;'>{{done_processing_time(n.created_at)}}</div>
+                  </div>
+                </td>
+              </tr>
+            </table>
+          </div>
+
         </div>
 
       </div>

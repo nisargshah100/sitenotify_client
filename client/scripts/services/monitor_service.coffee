@@ -16,6 +16,12 @@ App.service 'MonitorService', (Restangular, AccountService) ->
   @setCurrent = (id) ->
     @current = _.find(@monitors, ((x) -> x.id == id))
   
+  @getNotifications = (limit) ->
+    return unless @current
+    limit ||= 5
+    @current.customGET('notifications', { limit: limit}).then (data) =>
+      @notifications = data
+
   @getLastFailed = (limit) ->
     return unless @current
     limit ||= 5
