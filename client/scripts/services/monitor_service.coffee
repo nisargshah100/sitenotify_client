@@ -3,6 +3,7 @@ App.service 'MonitorService', (Restangular, AccountService) ->
   @current = null
   @currentStats = {}
   @lastFailed = null
+  @notifications = null
   
   @getStats = (id, startDate = null, endDate = null) ->
     AccountService.current.one('site_monitors', id).customGET('stats', {start_date: startDate, end_date: endDate}).then (data) =>

@@ -72,11 +72,15 @@
         </ul>
 
         <ul class="list-group" ng-if='stats()'>
-          <div class="btn-group">
+          <div class="btn-group" ng-if='stats().total_success_checks > 0'>
             <label class="btn btn-default" ng-model="monitor.range" btn-radio="'daily'">Daily</label>
             <label class="btn btn-default" ng-model="monitor.range" btn-radio="'weekly'">Weekly</label>
             <label class="btn btn-default" ng-model="monitor.range" btn-radio="'monthly'">Monthly</label>
           </div>
+
+          <li class="list-group-item" ng-if='stats().total_success_checks <= 0'>
+            There are no stats yet - we are going to be checking your site soon!
+          </li>
 
           <li class="list-group-item" ng-if='stats().total_success_checks'>
             <i class="fa fa-chevron-circle-up" style='margin-right:10px;'></i>
@@ -113,6 +117,11 @@
                 <img src='/images/loading.gif' style='width: 32px; height: 32px; display: inline; margin-right: 10px;'></img>
                 Loading...
             </ul>
+            <ul class="list-group" ng-if='checks() && checks().length == 0'>
+              <li class="list-group-item">
+                There are no down / slow checks for monitor
+              </li>
+            </ul>
 
             <table class='table' ng-if='checks()'>
               <tr ng-repeat='check in checks()'>
@@ -127,11 +136,13 @@
 
           <div class='panel panel-info' ng-if='monitor.latestDisplay == "notifications"'>
             <ul class="list-group" ng-if='!notifications()'>
-              <li class="list-group-item" ng-if='loadingNotifications'>
+              <li class="list-group-item">
                 <img src='/images/loading.gif' style='width: 32px; height: 32px; display: inline; margin-right: 10px;'></img>
                 Loading...
               </li>
-              <li class="list-group-item" ng-if='!loadingNotifications'>
+            </ul>
+            <ul class="list-group" ng-if='notifications() && notifications().length == 0'>
+              <li class="list-group-item">
                 There are no notifications for monitor
               </li>
             </ul>
