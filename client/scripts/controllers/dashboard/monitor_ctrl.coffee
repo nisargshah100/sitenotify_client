@@ -128,6 +128,7 @@ App.controller 'MonitorCtrl', ($scope, MonitorService, $stateParams, $interval, 
 App.controller 'MonitorDownSlowORNotifcationCtrl', ($scope, $interval, MonitorService) ->
 
   $scope.monitor = { latestDisplay: 'requests' }
+  $scope.loadingNotifications = false
 
   minuteInterval = $interval((() -> 
     MonitorService.getLastFailed()
@@ -140,7 +141,9 @@ App.controller 'MonitorDownSlowORNotifcationCtrl', ($scope, $interval, MonitorSe
   $scope.init = ->
     MonitorService.lastFailed = null
     MonitorService.getLastFailed()
-    MonitorService.getNotifications()
+    $scope.loadingNotifications = true
+    MonitorService.getNotifications 5, =>
+      $scope.loadingNotifications = false
 
   $scope.checks = ->
     MonitorService.lastFailed

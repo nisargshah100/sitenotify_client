@@ -125,7 +125,17 @@
             </table>
           </div>
 
-          <div class='panel panel-danger' ng-if='monitor.latestDisplay == "notifications"'>
+          <div class='panel panel-info' ng-if='monitor.latestDisplay == "notifications"'>
+            <ul class="list-group" ng-if='!notifications()'>
+              <li class="list-group-item" ng-if='loadingNotifications'>
+                <img src='/images/loading.gif' style='width: 32px; height: 32px; display: inline; margin-right: 10px;'></img>
+                Loading...
+              </li>
+              <li class="list-group-item" ng-if='!loadingNotifications'>
+                There are no notifications for monitor
+              </li>
+            </ul>
+
             <table class='table' ng-if='notifications()'>
               <tr ng-repeat='n in notifications()'>
                 <td>
