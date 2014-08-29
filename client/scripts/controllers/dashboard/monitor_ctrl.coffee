@@ -151,26 +151,39 @@ App.controller 'MonitorDownSlowORNotifcationCtrl', ($scope, $interval, MonitorSe
   $scope.done_processing_time = (check) ->
     moment(check.done_processing_time).format('MM/DD/YYYY [at] h:mm a')
 
+  $scope.notificationDate = (date) ->
+    moment(date).format('MM/DD/YYYY [at] h:mm a')
+
 
 App.controller 'MonitorCheckCtrl', ($scope, MonitorService, $stateParams, $sce) ->
-  $scope.check = null
+  $scope.checkData = null
 
   $scope.init = ->
     MonitorService.current.one('site_checks', $stateParams.id).get().then (data) =>
-      $scope.check = data
+      $scope.checkData = data
+
+  $scope.check = ->
+    $scope.checkData
 
   $scope.monitor = ->
     MonitorService.current
 
   $scope.done_processing_time = ->
-    moment($scope.check.done_processing_time).format('MM/DD/YYYY [at] h:mm a')
+    moment($scope.checkData.done_processing_time).format('MM/DD/YYYY [at] h:mm a')
 
   $scope.ping = ->
-    $scope.check.ping.replace(/\n/g, '<br />')
+    $scope.checkData.ping.replace(/\n/g, '<br />')
 
   $scope.traceroute = ->
-    $scope.check.traceroute.replace(/\n/g, '<br />')
+    $scope.checkData.traceroute.replace(/\n/g, '<br />')
 
   $scope.har = ->
-    $sce.trustAsResourceUrl("http://har.sitenotify.net/?url=#{$scope.check.har_url}")
+    $sce.trustAsResourceUrl("http://har.sitenotify.net/?url=#{$scope.checkData.har_url}")
+
+  $scope.acknowledge = ->
+    $scope.checkData.customGET('acknowledge').then ->
+      $scope.init()
+
+  $scope.acknowledge_time = ->
+    moment($scope.checkData.last_acknowledged).format('MM/DD/YYYY [at] h:mm a')
 

@@ -1,7 +1,7 @@
 <div ng-controller='MonitorCheckCtrl' ng-init='init()'>
 
   <div style='margin-bottom: 7px;'>
-    <a ui-sref='dashboard.monitor.show({id: check.site_monitor_id})'>&lt;-- Back to Monitor</a>
+    <a ui-sref='dashboard.monitor.show({id: check().site_monitor_id})'>&lt;-- Back to Monitor</a>
   </div>
 
   <div class='panel panel-info'>
@@ -9,15 +9,19 @@
       <strong>{{monitor().name}}</strong>
       <div style='float:right'>{{monitor().url}}</div>
     </div>
-    <div class='panel-body' ng-if='!check'>
+    <div class='panel-body' ng-if='!check()'>
       <img src='/images/loading.gif' style='width: 32px; height: 32px; display: inline; margin-right: 10px;'></img>
       Loading Details
     </div>
-    <div class='panel-body' ng-if='check'>
-      
+    <div class='panel-body' ng-if='check()'>
+
+      <button class='btn btn-warning' style='float:right;' ng-click='acknowledge()' ng-if='!check().last_acknowledged'>Acknowledge</button>
+
+      <button class='btn btn-success' style='float:right;' ng-if='check().last_acknowledged' disabled>Acknowledged at {{acknowledge_time()}}</button>
+
       <tabset class='ui-tab'>
         <tab heading='Details'>
-          <table class='table' ng-if='check'>
+          <table class='table' ng-if='check()'>
             <tbody>
               <tr>
                 <th>When</th>
@@ -26,34 +30,34 @@
               <tr>
                 <th>Status</th>
                 <td>
-                  <label class='badge badge-warning' ng-if='check.slow'>Slow</label>
-                  <label class='badge badge-danger' ng-if='!check.status_success'>Down</label>
+                  <label class='badge badge-warning' ng-if='check().slow'>Slow</label>
+                  <label class='badge badge-danger' ng-if='!check().status_success'>Down</label>
                 </td>
               </tr>
               <tr>
                 <th>Status Code</th>
-                <td>{{check.status_code}}</td>
+                <td>{{check().status_code}}</td>
               </tr>
               <tr>
                 <th>Response Time</th>
-                <td>{{check.response_time}} ms</td>
+                <td>{{check().response_time}} ms</td>
               </tr>
               <tr>
                 <th>Content Size</th>
-                <td>{{check.content_size}} bytes</td>
+                <td>{{check().content_size}} bytes</td>
               </tr>
-              <tr ng-if='check.ping'>
+              <tr ng-if='check().ping'>
                 <th>Ping</th>
                 <td ng-bind-html='ping()'></td>
               </tr>
-              <tr ng-if='check.traceroute'>
+              <tr ng-if='check().traceroute'>
                 <th>Traceroute</th>
                 <td ng-bind-html='traceroute()'></td>
               </tr>
             </tbody>
           </table>
         </tab>
-        <tab heading='Page Speed' ng-if='check.har_stored'>
+        <tab heading='Page Speed' ng-if='check().har_stored'>
           <iframe style='width:100%; height: 500px;' frameborder='0' ng-src='{{har()}}'></iframe>
         </tab>
       </tabset>
