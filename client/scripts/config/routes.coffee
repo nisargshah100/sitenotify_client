@@ -64,6 +64,10 @@ App.config ($stateProvider, $urlRouterProvider) ->
       template: '<div ui-view></div>'
     }
 
+    .state 'dashboard.status_pages', {
+      template: '<div ui-view></div>'
+    }
+
     .state 'dashboard.monitor.new', {
       url: '/dashboard/monitors/new'
       templateUrl: 'views/dashboard/monitor/new.html'
@@ -117,6 +121,11 @@ App.config ($stateProvider, $urlRouterProvider) ->
       onEnter: ($stateParams, MonitorService, $state) ->
         MonitorService.setCurrent(parseInt($stateParams.monitor_id))
         $state.transitionTo('dashboard.home') if not MonitorService.current?
+    }
+
+    .state 'dashboard.status_pages.index', {
+      url: '/dashboard/status_pages',
+      templateUrl: 'views/dashboard/status_pages/index.html'
     }
 
     .state 'dashboard.plan', {
